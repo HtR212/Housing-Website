@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +26,8 @@ SECRET_KEY = 'django-insecure-7gc62g)lpn^+371r5cs*i95aes@$^k)67@0ftk6s!6-p(jd%k*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','127.0.0.1','off-grounds-housing-b07.herokuapp.com']
+
 
 
 # Application definition
@@ -121,3 +123,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+try:
+    if 'HEROKU' in os.environ:
+        import django_heroku
+        django_heroku.settings(locals())
+except ImportError:
+    found = False
