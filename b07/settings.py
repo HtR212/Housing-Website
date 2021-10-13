@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-7gc62g)lpn^+371r5cs*i95aes@$^k)67@0ftk6s!6-p(jd%k*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','off-grounds-housing-b07.herokuapp.com', 'project-b-07.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'off-grounds-housing-b07.herokuapp.com', 'project-b-07.herokuapp.com',
+                 'test-project-b-07.herokuapp.com']
 
 
 
@@ -39,6 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'housing.apps.HousingConfig'
 ]
 
 MIDDLEWARE = [
@@ -107,12 +114,43 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_L10N = True
 
+USE_TZ = False
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 4
+LOGIN_REDIRECT_URL = '/housing'
+LOGOUT_REDIRECT_URL = '/'
+
+# Additional configuration settings
+SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_LOGOUT_ON_GET= True
+ACCOUNT_UNIQUE_EMAIL = False
+ACCOUNT_EMAIL_REQUIRED = True
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/

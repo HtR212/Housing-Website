@@ -1,0 +1,21 @@
+{% load socialaccount %}
+<html>
+
+<head>
+    <title>Google Registration</title>
+</head>
+
+<body>
+    <h1>Housing-B07</h1>
+    {% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}! Your email is {{ user.email }}</p>
+    <a href="logout">Logout</a>
+
+    {% else %}
+    <h1>Login Page</h1>
+    <a href="{% provider_login_url 'google' %}">Login with Google</a>
+    {% endif %}
+
+</body>
+
+</html>
