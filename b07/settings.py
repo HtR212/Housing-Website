@@ -131,6 +131,7 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 4
 LOGIN_REDIRECT_URL = '/housing'
+LOGOUT_REDIRECT_URL = '/'
 
 # Additional configuration settings
 SOCIALACCOUNT_QUERY_EMAIL = True
