@@ -19,6 +19,8 @@ from django.urls import include, path
 from housing import views
 
 urlpatterns = [
-    path('', views.index, name='index'),    path('housing/', include('housing.urls')),
+    path('', views.index, name='index'),
+    path('housing/', include('housing.urls')),
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
 ]
