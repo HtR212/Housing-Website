@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from django.contrib.auth.views import LogoutView
+from allauth.account.views import LogoutView
 
 from housing import views
 
