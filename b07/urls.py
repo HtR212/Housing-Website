@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from allauth.account.views import LogoutView
 
 from housing import views
 
@@ -22,4 +23,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('housing/', include('housing.urls')),
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+    path('logout', LogoutView.as_view()),
 ]
