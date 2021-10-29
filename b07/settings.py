@@ -45,8 +45,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'housing.apps.HousingConfig',
-    'bootstrap5'
+    'housing.apps.HousingConfig'
 ]
 
 MIDDLEWARE = [
