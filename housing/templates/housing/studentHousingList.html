@@ -22,6 +22,8 @@
     {% for studentHousing in studentHousing_list %}
         <dt class="text-uppercase fw-bolder"><strong>{{ studentHousing.name }}</strong></dt>
         <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Distance to Grounds: {{ studentHousing.distToGrounds }}</em></dd>
+        <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Location: {{ studentHousing.location }}</em></dd>
+        <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Cost: ${{ studentHousing.minCost }} - ${{ studentHousing.maxCost }}</em></dd>
         <br><br>
     {% endfor %}
     </dl>
