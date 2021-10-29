@@ -6,14 +6,33 @@
 </head>
 
 <body>
-    <h1>Housing-B07</h1>
+    <!-- Bootstrap -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    <div style="width: 100%" class="shadow p-2 mb-3 bg-body rounded text-white">
+    <h1 class="font-monospace text-center">Housing for UVA Students by B-07!</h1>
+    </div>
+
     {% if user.is_authenticated %}
+    <div class="mx-auto" style="width: 200px;">
     <p>Welcome, {{ user.username }}! Your email is {{ user.email }}</p>
     <a href="logout">Logout</a>
+    <a href="list">See Housing Options Here!</a>
+    </div>
 
     {% else %}
-    <h1>Login Page</h1>
+    <div class="mx-auto" style="width: 200px;">
+    <h2>Please Login!</h2>
     <a href="{% provider_login_url 'google' %}">Login with Google</a>
+    </div>
     {% endif %}
 
 </body>
