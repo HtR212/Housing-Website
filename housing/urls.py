@@ -4,6 +4,8 @@ from . import views
 from . import views
 from allauth.account.views import LogoutView
 
+app_name = 'housing'
+
 urlpatterns = [
     path('', views.index, name='index'),
     path('logout', LogoutView.as_view()),
