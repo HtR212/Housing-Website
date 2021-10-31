@@ -10,6 +10,7 @@ from .models import StudentHousing
 def index(request):
     return render(request, 'housing/index.html')
 
+
 class HousingListView(generic.ListView):
     template_name = 'housing/studentHousingList.html'
     context_object_name = 'studentHousing_list'
@@ -19,3 +20,14 @@ class HousingListView(generic.ListView):
         Return all housing listings.
         """
         return StudentHousing.objects.all()
+
+
+class DetailView(generic.DetailView):
+    model = StudentHousing
+    template_name = 'housing/studentHousingOption.html'
+
+    def get_queryset(self):
+        """
+        Return all housing listings.
+        """
+        return StudentHousing.objects

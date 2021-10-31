@@ -8,6 +8,7 @@ app_name = 'housing'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('logout', LogoutView.as_view()),
-    path('list', views.HousingListView.as_view(), name='studentHousingList')
+    path('logout', LogoutView.as_view(), name='logout'),
+    path('list/', views.HousingListView.as_view(), name='studentHousingList'),
+    path('<int:pk>/', views.DetailView.as_view(), name='detail'),
 ]
