@@ -17,6 +17,7 @@ class StudentHousing(models.Model):
     deadline = models.CharField(max_length=200, null=True)
     averageRating = models.IntegerField(default=0)
     address = models.TextField(max_length=200, null=True)
+    image = models.ImageField(blank=True, null=True) #makes it optional to include an image
 
     def __str__(self):
         return self.name
