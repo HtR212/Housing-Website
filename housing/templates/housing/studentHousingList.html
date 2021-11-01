@@ -26,9 +26,15 @@
         <li class="nav-item">
             <a class="nav-link" href="{% url 'housing:studentHousingList' %}">Browse Listings</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'housing:logout' %}">Logout</a>
-        </li>
+        {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'housing:logout' %}">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">Login</a>
+            </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
@@ -46,6 +52,10 @@
         <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Distance to Grounds: {{ studentHousing.distToGrounds }}</em></dd>
         <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Location: {{ studentHousing.location }}</em></dd>
         <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Cost: ${{ studentHousing.minCost }} - ${{ studentHousing.maxCost }}</em></dd>
+        <br>
+        {% if studentHousing.image != None %}
+            <img width="25%" src="{{  studentHousing.image.url }}"> 
+        {% endif %}
         <br><br>
     {% endfor %}
     </dl>
