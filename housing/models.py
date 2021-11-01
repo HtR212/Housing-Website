@@ -21,3 +21,9 @@ class StudentHousing(models.Model):
     def __str__(self):
         return self.name
 
+    def valid_parameters(self):
+        if self.distToGrounds > 0 and self.minCost > 0 and self.maxCost > 0 and self.averageRating >= 0 and self.averageRating <= 5:
+            return True
+        else:
+            return False
+ 
