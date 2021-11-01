@@ -50,8 +50,24 @@ class StudentHousingScrollViewTests(TestCase):
         self.assertContains(response, "No housing options are available.")
         self.assertQuerysetEqual(response.context['studentHousing_list'], [])
 
-    def test_wrong_params(TestCase):
+    def test_wrong_params(self):
         """
         Listings with invalid parameters are not displayed
         """
-        return True
+        StudentHousing.objects.create(name="Incorrect Params", distToGrounds=1, 
+        parking=True, minCost=-10, maxCost=-1000, averageRating=6)
+        response = self.client.get(reverse('housing:studentHousingList'))
+        self.assertContains(response, "No housing options are available.")
+        self.assertQuerysetEqual(response.context['studentHousing_list'], [])
+
+    def test_wrong_params2(self):
+        """
+        Listings with invalid parameters are not displayed
+        """
+        StudentHousing.objects.create(name="Incorrect Params", distToGrounds=1, 
+        parking=False, minCost=10, maxCost=0, averageRating=3)
+        response = self.client.get(reverse('housing:studentHousingList'))
+        self.assertContains(response, "No housing options are available.")
+        self.assertQuerysetEqual(response.context['studentHousing_list'], [])
+
+# Test for Housing List Detail View
