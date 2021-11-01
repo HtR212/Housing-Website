@@ -26,16 +26,22 @@
         <li class="nav-item">
             <a class="nav-link" href="{% url 'housing:studentHousingList' %}">Browse Listings</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'housing:logout' %}">Logout</a>
-        </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'housing:logout' %}">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">Login</a>
+            </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
 
 {% if user.is_authenticated %}
 <div style="width: 400px; font-size:120%">
-    <p class="text-success">Hi, {{ user.username }}! Here are the listings:</p>
+    <p class="text-success">Hi, {{ user.username }}! Here are the details:</p>
 </div>
 {% endif %}
 
