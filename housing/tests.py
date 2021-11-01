@@ -50,8 +50,43 @@ class StudentHousingScrollViewTests(TestCase):
         self.assertContains(response, "No housing options are available.")
         self.assertQuerysetEqual(response.context['studentHousing_list'], [])
 
-    def test_wrong_params(TestCase):
+    def test_wrong_params(self):
         """
         Listings with invalid parameters are not displayed
         """
-        return True
+        StudentHousing.objects.create(name="Incorrect Params", distToGrounds=1, 
+        parking=True, minCost=-10, maxCost=-1000, averageRating=6)
+        response = self.client.get(reverse('housing:studentHousingList'))
+        self.assertContains(response, "No housing options are available.")
+        self.assertQuerysetEqual(response.context['studentHousing_list'], [])
+
+    def test_wrong_params2(self):
+        """
+        Listings with invalid parameters are not displayed
+        """
+        StudentHousing.objects.create(name="Incorrect Params", distToGrounds=1, 
+        parking=False, minCost=10, maxCost=0, averageRating=3)
+        response = self.client.get(reverse('housing:studentHousingList'))
+        self.assertContains(response, "No housing options are available.")
+        self.assertQuerysetEqual(response.context['studentHousing_list'], [])
+
+# Test for Housing List Detail View
+class StudentHousingDetailViewTests(TestCase):
+    def setUp(self):
+        self.name1="Test_Housing_Name1"
+        self.distToGrounds1 = 100
+        self.parking1 = False
+        self.minCost1 = 999
+        self.maxCost1 = 4299
+        self.averageRating1 = 0
+        self.minCost2 = -999
+
+    def test_detail_view(self):
+        """
+        The detailed view of a listing should include the address
+        """
+        validListing = StudentHousing.objects.create(name=self.name1, distToGrounds=self.distToGrounds1, 
+        parking=self.parking1, minCost=self.minCost1, maxCost=self.maxCost1, averageRating=self.averageRating1, address="1308 Wertland St, Charlottesville, VA 22903")
+        url = reverse('housing:detail', args=(validListing.id,))
+        response = self.client.get(url)
+        self.assertContains(response, validListing.address)

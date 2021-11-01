@@ -19,7 +19,8 @@ class HousingListView(generic.ListView):
         """
         Return all housing listings.
         """
-        return StudentHousing.objects.all()
+        return StudentHousing.objects.filter(distToGrounds__gt=0).filter(minCost__gt=0).filter(maxCost__gt=0).filter(averageRating__gte=0).filter(averageRating__lte=5)
+        # return StudentHousing.objects.all()
 
 
 class DetailView(generic.DetailView):

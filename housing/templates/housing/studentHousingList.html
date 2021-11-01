@@ -12,7 +12,7 @@
 {% bootstrap_javascript %}
 
 
-<div style="width: 100%" class="shadow p-2 mb-3 bg-body rounded text-white">
+<div style="width: 100%" class="shadow p-2 mb-3 bg-body rounded text-black">
     <h3 class="font-monospace text-center">Housing for UVA Students by B-07!</h3>
 </div>
 
@@ -53,7 +53,7 @@
         <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Location: {{ studentHousing.location }}</em></dd>
         <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Cost: ${{ studentHousing.minCost }} - ${{ studentHousing.maxCost }}</em></dd>
         <br>
-        {% if studentHousing.image != None %}
+        {% if studentHousing.image %}
             <img width="25%" src="{{  studentHousing.image.url }}"> 
         {% endif %}
         <br><br>
