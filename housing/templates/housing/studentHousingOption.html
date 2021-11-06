@@ -26,6 +26,9 @@
         <li class="nav-item">
             <a class="nav-link" href="{% url 'housing:studentHousingList' %}">Browse Listings</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'housing:submission' %}">Suggest a Listing</a>
+        </li>
             {% if user.is_authenticated %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'housing:logout' %}">Logout</a>
