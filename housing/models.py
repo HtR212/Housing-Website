@@ -27,4 +27,11 @@ class StudentHousing(models.Model):
             return True
         else:
             return False
+
+class SuggestedListings(models.Model):
+    listingName = models.CharField(max_length=200)
+    listingAddress = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.listingName
  

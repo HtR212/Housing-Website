@@ -3,7 +3,7 @@ from django.http import HttpResponse
 
 from django.views import generic
 
-from .models import StudentHousing
+from .models import StudentHousing, SuggestedListings
 
 
 # Create your views here.
@@ -32,3 +32,10 @@ class DetailView(generic.DetailView):
         Return all housing listings.
         """
         return StudentHousing.objects
+
+class SuggestionView(generic.CreateView):
+    model = SuggestedListings
+    fields = ['listingName', 'listingAddress']
+    template_name = "housing/submission.html"
+    success_url = "submission/"
+
