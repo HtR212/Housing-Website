@@ -27,4 +27,13 @@ class StudentHousing(models.Model):
             return True
         else:
             return False
- 
+
+
+class Review(models.Model):
+    house = models.ForeignKey(StudentHousing, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=0)
+    review = models.TextField(max_length=200, default="")
+    pub_date = models.DateTimeField('date published')
+
+    def __str__(self):
+        return self.pub_date+' '+self.rating+' '+self.text[:10]

@@ -64,6 +64,82 @@
     <p>No housing details are available.</p>
 {% endif %}
 
+<form action="{% url 'housing:review_submit' studenthousing.id %}" method="post">
+    {% csrf_token %}
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% if user.is_authenticated %}
+    <label for="FieldSet1" class="form-label">Rating</label>
+    <fieldset id="FieldSet1">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1">
+          <label class="form-check-label" for="inlineRadio1">1</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="2">
+          <label class="form-check-label" for="inlineRadio2">2</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="3">
+          <label class="form-check-label" for="inlineRadio3">3</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value="4">
+          <label class="form-check-label" for="inlineRadio4">4</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5">
+          <label class="form-check-label" for="inlineRadio5">5</label>
+        </div>
+    </fieldset>
+    <div>
+        <label for="Textarea1" class="form-label">Review</label>
+        <textarea class="form-control" id="Textarea1" name="review" rows="3" placeholder="Please write your review here."></textarea>
+    </div>
+    <div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+    {% else %}
+    <label for="FieldSet2" class="form-label">Rating</label>
+    <fieldset id="FieldSet2">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio6" value=1 disabled>
+          <label class="form-check-label" for="inlineRadio6">1</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio7" value=2 disabled>
+          <label class="form-check-label" for="inlineRadio7">2</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio8" value=3 disabled>
+          <label class="form-check-label" for="inlineRadio8">3</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio9" value=4 disabled>
+          <label class="form-check-label" for="inlineRadio9">4</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio10" value=5 disabled>
+          <label class="form-check-label" for="inlineRadio10">5</label>
+        </div>
+    </fieldset>
+    <div>
+        <label for="Textarea2" class="form-label">Review</label>
+        <textarea class="form-control" id="Textarea2" name="Review" rows="3" placeholder="Please login to write a review." disabled></textarea>
+    </div>
+    {% endif %}
+</form>
+
+<div class="list-group list-group-flush">
+    {% for review in studenthousing.review_set.all %}
+        <div class="list-group-item" style="margin-left: 250px; margin-right: 250px; margin-top: 5px;">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Rating: {{review.rating}}</h5>
+                <small>{{review.pub_date}}</small>
+            </div>
+            <p class="mb-1">Review: {{review.review}}<br><br></p>
+        </div><br>
+    {% endfor %}
+</div>
 
 <div style="bottom:0; width:100%" class="card text-center">
     <div class="card-body">
