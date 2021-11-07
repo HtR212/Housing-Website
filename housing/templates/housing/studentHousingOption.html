@@ -6,6 +6,12 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 
+<head>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
+    <title>{{ studenthousing.name }}</title>
+</head>
+
 
 {% load bootstrap5 %}
 {% bootstrap_css %}
@@ -63,6 +69,17 @@
 {% else %}
     <p>No housing details are available.</p>
 {% endif %}
+
+<div id='map' style='width: 800px; height: 400px; margin: auto'></div>
+<script>
+ mapboxgl.accessToken = 'pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ';
+ var map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/streets-v10',
+  center: [-78.500931, 38.035391],
+  zoom: 14
+ });
+</script>
 
 
 <div style="bottom:0; width:100%" class="card text-center">
