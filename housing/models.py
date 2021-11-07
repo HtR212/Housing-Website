@@ -15,7 +15,7 @@ class StudentHousing(models.Model):
     landlordPhone = models.CharField(max_length=200, null=True)
     amenities = models.TextField(max_length=200, null=True)
     deadline = models.CharField(max_length=200, null=True)
-    averageRating = models.IntegerField(default=0)
+    averageRating = models.FloatField(default=0)
     address = models.TextField(max_length=200, null=True)
     image = models.ImageField(blank=True, null=True) #makes it optional to include an image
 
@@ -36,4 +36,4 @@ class Review(models.Model):
     pub_date = models.DateTimeField('date published')
 
     def __str__(self):
-        return self.pub_date+' '+self.rating+' '+self.text[:10]
+        return str(self.pub_date)+' '+str(self.rating)+' '+self.review[:10]

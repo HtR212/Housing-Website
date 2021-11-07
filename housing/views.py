@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from .models import StudentHousing
 from django.urls import reverse
 from django.utils import timezone
+from django.db.models import Avg
 
 
 # Create your views here.
@@ -48,4 +49,6 @@ def review_submit(request, housing_id):
         })
     else:
         housing.review_set.create(rating=int(selected_choice), review=request.POST['review'], pub_date=timezone.now())
+        housing.averageRating = round(housing.review_set.aggregate(Avg('rating'))['rating__avg'], 1)
+        housing.save()
         return HttpResponseRedirect(reverse('housing:detail', args=(housing_id,)))
