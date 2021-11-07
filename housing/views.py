@@ -35,7 +35,9 @@ class DetailView(generic.DetailView):
 
 class SuggestionView(generic.CreateView):
     model = SuggestedListings
-    fields = ['listingName', 'listingAddress']
     template_name = "housing/submission.html"
-    success_url = "submission/"
+    fields = ['listingName', 'listingAddress']
+    success_url = 'submission/'
+
+    
 
