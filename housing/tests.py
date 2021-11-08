@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 from housing.models import StudentHousing
+from housing.models import Review
+from housing.models import SuggestedListings
 
 # Create your tests here.
 class DummyTestCase(TestCase):
@@ -70,6 +72,7 @@ class StudentHousingScrollViewTests(TestCase):
         self.assertContains(response, "No housing options are available.")
         self.assertQuerysetEqual(response.context['studentHousing_list'], [])
 
+
 # Test for Housing List Detail View
 class StudentHousingDetailViewTests(TestCase):
     def setUp(self):
@@ -90,3 +93,68 @@ class StudentHousingDetailViewTests(TestCase):
         url = reverse('housing:detail', args=(validListing.id,))
         response = self.client.get(url)
         self.assertContains(response, validListing.address)
+
+class DisplayReviewTest(TestCase):
+    def setUp(self):
+        self.house = StudentHousing.objects.create(name="Test_Housing_Name1", distToGrounds=100,
+                                                     parking=False, minCost=999,
+                                                     maxCost=4299, averageRating=0,
+                                                     address="1308 Wertland St, Charlottesville, VA 22903")
+        self.rating = 5
+        self.comment = "great"
+        self.pub_date = "2021-11-08 12:20"
+
+    def test_review_view(self):
+        """
+        Tests for correct display of a review
+        """
+        validReview = Review.objects.create(house=self.house, rating=self.rating, comment=self.comment, pub_date=self.pub_date)
+        url = reverse('housing:detail', args=(validReview.id,))
+        response = self.client.get(url)
+        self.assertContains(response, validReview.rating)
+        self.assertContains(response, validReview.comment)
+
+class WrongReviewTest(TestCase):
+    def setUp(self):
+        self.house = StudentHousing.objects.create(name="Test_Housing_Name1", distToGrounds=100,
+                                                       parking=False, minCost=999,
+                                                       maxCost=4299, averageRating=0,
+                                                       address="1308 Wertland St, Charlottesville, VA 22903")
+        self.rating = 7
+        self.comment = "great"
+        self.pub_date = "2021-11-08 12:20"
+    def test_wrong_params_review(self):
+        """
+        Reviews with invalid parameters are not displayed
+        """
+        invalidReview = Review.objects.create(house=self.house, rating=self.rating, comment=self.comment,
+                                            pub_date=self.pub_date)
+        self.assertIs(invalidReview.valid_parameters(), False)
+
+class SuggestionSubmissionSuccess(TestCase):
+    def setUp(self):
+        self.listingName = "Carratt Apartments"
+        self.listingAddress = "1904 Jefferson Park Avenue, Charlottesville, VA 22903"
+
+    def test_good_suggestion(self):
+        """
+        Tests for successful submission of a suggestion
+        """
+        validsuggestion = SuggestedListings.objects.create(listingName=self.listingName, listingAddress=self.listingAddress)
+        self.assertIs(validsuggestion.valid_parameters(), True)
+
+    def test_bad_name_suggestion(self):
+        """
+        Tests that an invalid suggestion(one without a name or address) is not submitted
+        """
+        invalidsuggestion = SuggestedListings.objects.create(listingName="",
+                                                           listingAddress=self.listingAddress)
+        self.assertIs(invalidsuggestion.valid_parameters(), False)
+
+    def test_bad_addr_suggestion(self):
+        """
+        Tests that an invalid suggestion(one without a name or address) is not submitted
+        """
+        invalidsuggestion = SuggestedListings.objects.create(listingName=self.listingName,
+                                                           listingAddress="")
+        self.assertIs(invalidsuggestion.valid_parameters(), False)
