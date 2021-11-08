@@ -71,6 +71,7 @@ class StudentHousingScrollViewTests(TestCase):
         self.assertContains(response, "No housing options are available.")
         self.assertQuerysetEqual(response.context['studentHousing_list'], [])
 
+
 # Test for Housing List Detail View
 class StudentHousingDetailViewTests(TestCase):
     def setUp(self):
@@ -92,7 +93,7 @@ class StudentHousingDetailViewTests(TestCase):
         response = self.client.get(url)
         self.assertContains(response, validListing.address)
 
-class ReviewTests(TestCase):
+class DisplayReviewTest(TestCase):
     def setUp(self):
         self.house = StudentHousing.objects.create(name="Test_Housing_Name1", distToGrounds=100,
                                                      parking=False, minCost=999,
@@ -103,7 +104,28 @@ class ReviewTests(TestCase):
         self.pub_date = "2021-11-08 12:20"
 
     def test_review_view(self):
+        """
+        Tests for correct display of a review
+        """
         validReview = Review.objects.create(house=self.house, rating=self.rating, comment=self.comment, pub_date=self.pub_date)
         url = reverse('housing:detail', args=(validReview.id,))
         response = self.client.get(url)
+        self.assertContains(response, validReview.rating)
         self.assertContains(response, validReview.comment)
+
+class WrongReviewTest(TestCase):
+    def setUp(self):
+        self.house = StudentHousing.objects.create(name="Test_Housing_Name1", distToGrounds=100,
+                                                       parking=False, minCost=999,
+                                                       maxCost=4299, averageRating=0,
+                                                       address="1308 Wertland St, Charlottesville, VA 22903")
+        self.rating = 7
+        self.comment = "great"
+        self.pub_date = "2021-11-08 12:20"
+    def test_wrong_params_review(self):
+        """
+        Reviews with invalid parameters are not displayed
+        """
+        invalidReview = Review.objects.create(house=self.house, rating=self.rating, comment=self.comment,
+                                            pub_date=self.pub_date)
+        self.assertIs(invalidReview.valid_parameters(), False)

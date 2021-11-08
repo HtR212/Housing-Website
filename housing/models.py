@@ -38,6 +38,12 @@ class Review(models.Model):
     def __str__(self):
         return str(self.pub_date)+' '+str(self.rating)+' '+self.comment[:10]
 
+    def valid_parameters(self):
+        if 5 >= self.rating >= 0:
+            return True
+        else:
+            return False
+
 
 class User(models.Model):
     email = models.CharField(max_length=320, primary_key=True) # According to Google, the longest email address could have 320 characters
