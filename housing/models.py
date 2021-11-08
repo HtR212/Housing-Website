@@ -74,3 +74,9 @@ class SuggestedListings(models.Model):
 
     def __str__(self):
         return self.listingName
+
+    def valid_parameters(self):
+        if len(self.listingName) > 0 and len(self.listingAddress) > 0:
+            return True
+        else:
+            return False

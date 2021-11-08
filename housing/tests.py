@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from housing.models import StudentHousing
 from housing.models import Review
+from housing.models import SuggestedListings
 
 # Create your tests here.
 class DummyTestCase(TestCase):
@@ -129,3 +130,31 @@ class WrongReviewTest(TestCase):
         invalidReview = Review.objects.create(house=self.house, rating=self.rating, comment=self.comment,
                                             pub_date=self.pub_date)
         self.assertIs(invalidReview.valid_parameters(), False)
+
+class SuggestionSubmissionSuccess(TestCase):
+    def setUp(self):
+        self.listingName = "Carratt Apartments"
+        self.listingAddress = "1904 Jefferson Park Avenue, Charlottesville, VA 22903"
+
+    def test_good_suggestion(self):
+        """
+        Tests for successful submission of a suggestion
+        """
+        validsuggestion = SuggestedListings.objects.create(listingName=self.listingName, listingAddress=self.listingAddress)
+        self.assertIs(validsuggestion.valid_parameters(), True)
+
+    def test_bad_name_suggestion(self):
+        """
+        Tests that an invalid suggestion(one without a name or address) is not submitted
+        """
+        invalidsuggestion = SuggestedListings.objects.create(listingName="",
+                                                           listingAddress=self.listingAddress)
+        self.assertIs(invalidsuggestion.valid_parameters(), False)
+
+    def test_bad_addr_suggestion(self):
+        """
+        Tests that an invalid suggestion(one without a name or address) is not submitted
+        """
+        invalidsuggestion = SuggestedListings.objects.create(listingName=self.listingName,
+                                                           listingAddress="")
+        self.assertIs(invalidsuggestion.valid_parameters(), False)
