@@ -56,7 +56,7 @@
         <dt class="text-uppercase fw-bolder"><a style="text-decoration:none" href="{% url 'housing:detail' review.house.id %}"><strong>{{ review.house }}</strong></a></dt>
         <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Rating: {{ review.rating }}</em></dd>
         <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Review: {{ review.comment }}</em></dd>
-        <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Posted on: ${{ review.pub_date }}</em></dd>
+        <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Posted on: {{ review.pub_date }}</em></dd>
         <br>
     {% endfor %}
     </dl>
