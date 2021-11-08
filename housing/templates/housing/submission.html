@@ -4,9 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-
-
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
@@ -17,24 +14,24 @@
 </div>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand">Explore!</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
+   <a class="navbar-brand">Explore!</a>
+   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon"></span>
+   </button>
+   <div class="collapse navbar-collapse" id="navbarNav">
+       <ul class="navbar-nav">
+           <li class="nav-item">
                 <a class="nav-link" href="{% url 'index' %}">Homepage</a>
-            </li>
-            <li class="nav-item">
+           </li>
+           <li class="nav-item">
                 <a class="nav-link" href="{% url 'housing:studentHousingList' %}">Browse Listings</a>
-            </li>
-            {% if user.is_authenticated %}
+           </li>
+           {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'housing:logout' %}">Logout</a>
                 </li>
                 <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">Account</a>
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">Account</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item nav-link" href="{% url 'housing:review_list' %}">Manage comments</a>
                     </div>
@@ -42,13 +39,13 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'housing:submission' %}">Suggest a Listing</a>
                 </li>
-            {% else %}
+           {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% provider_login_url 'google' %}">Login</a>
                 </li>
-            {% endif %}
+           {% endif %}
         </ul>
-    </div>
+   </div>
 </nav>
 
 {% if user.is_authenticated %}
@@ -72,5 +69,3 @@
       c. 2021
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
