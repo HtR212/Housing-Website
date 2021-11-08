@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.views import generic
 from django.shortcuts import get_object_or_404
-from .models import StudentHousing
+from .models import StudentHousing, Review, UserReview, UserFavorite, User
 from django.urls import reverse
 from django.utils import timezone
 from django.db.models import Avg
@@ -11,6 +11,11 @@ from django.db.models import Avg
 
 # Create your views here.
 def index(request):
+    if request.user.is_authenticated:
+        try:
+            User.objects.get(email=request.user.email)
+        except User.DoesNotExist:
+            User.objects.create(email=request.user.email)
     return render(request, 'housing/index.html')
 
 
@@ -48,7 +53,14 @@ def review_submit(request, housing_id):
             'error_message': "You didn't select a rating.",
         })
     else:
-        housing.review_set.create(rating=int(selected_choice), review=request.POST['review'], pub_date=timezone.now())
+        r = housing.review_set.create(rating=int(selected_choice), comment=request.POST['comment'], pub_date=timezone.now())
         housing.averageRating = round(housing.review_set.aggregate(Avg('rating'))['rating__avg'], 1)
         housing.save()
+        User.objects.get(email=request.user.email).userreview_set.create(review_id=r.id)
         return HttpResponseRedirect(reverse('housing:detail', args=(housing_id,)))
+
+
+def user_review_list(request):
+    review_list = Review.objects.filter(id__in=User.objects.get(email=request.user.email).userreview_set.values_list('review_id', flat=True))
+    context = {'review_list': review_list}
+    return render(request, 'housing/userReviewList.html', context)

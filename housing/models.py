@@ -32,8 +32,31 @@ class StudentHousing(models.Model):
 class Review(models.Model):
     house = models.ForeignKey(StudentHousing, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
-    review = models.TextField(max_length=200, default="")
+    comment = models.TextField(max_length=200, default="")
     pub_date = models.DateTimeField('date published')
 
     def __str__(self):
-        return str(self.pub_date)+' '+str(self.rating)+' '+self.review[:10]
+        return str(self.pub_date)+' '+str(self.rating)+' '+self.comment[:10]
+
+
+class User(models.Model):
+    email = models.CharField(max_length=320, primary_key=True) # According to Google, the longest email address could have 320 characters
+
+    def __str__(self):
+        return self.email
+
+
+class UserReview(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review_id = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.review_id)
+
+
+class UserFavorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    favorite_housing_id = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.favorite_housing_id)
