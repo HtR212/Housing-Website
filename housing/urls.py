@@ -12,4 +12,6 @@ urlpatterns = [
     path('list/', views.HousingListView.as_view(), name='studentHousingList'),
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     path('submission/', views.SuggestionView.as_view(), name='submission'),
+    path('submission/success/', views.SuccessfulSubmissionView, name='success'),
+
 ]

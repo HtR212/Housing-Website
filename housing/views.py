@@ -5,7 +5,6 @@ from django.views import generic
 
 from .models import StudentHousing, SuggestedListings
 
-
 # Create your views here.
 def index(request):
     return render(request, 'housing/index.html')
@@ -37,7 +36,11 @@ class SuggestionView(generic.CreateView):
     model = SuggestedListings
     template_name = "housing/submission.html"
     fields = ['listingName', 'listingAddress']
-    success_url = 'submission/'
+    success_url = 'success/'
+
+def SuccessfulSubmissionView(request):
+    return render(request,'housing/successfulSubmission.html')
+
 
     
 
