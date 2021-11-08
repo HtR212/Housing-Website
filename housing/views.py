@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.views import generic
 from django.shortcuts import get_object_or_404
-from .models import StudentHousing, Review, UserReview, UserFavorite, User
+from .models import StudentHousing, Review, UserReview, UserFavorite, User, SuggestedListings
 from django.urls import reverse
 from django.utils import timezone
 from django.db.models import Avg
@@ -17,6 +17,7 @@ def index(request):
         except User.DoesNotExist:
             User.objects.create(email=request.user.email)
     return render(request, 'housing/index.html')
+
 
 # def default_map(request):
 #     # TODO: move this token to Django settings from an environment variable
@@ -72,3 +73,14 @@ def user_review_list(request):
     review_list = Review.objects.filter(id__in=User.objects.get(email=request.user.email).userreview_set.values_list('review_id', flat=True))
     context = {'review_list': review_list}
     return render(request, 'housing/userReviewList.html', context)
+
+
+class SuggestionView(generic.CreateView):
+    model = SuggestedListings
+    template_name = "housing/submission.html"
+    fields = ['listingName', 'listingAddress']
+    success_url = 'success/'
+
+
+def successful_submission_view(request):
+    return render(request, 'housing/successfulSubmission.html')

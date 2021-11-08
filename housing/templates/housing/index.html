@@ -11,6 +11,7 @@
 {% bootstrap_javascript %}
 {% load socialaccount %}
 
+<<<<<<< HEAD
 <div style="width: 100%" class="shadow p-2 mb-3 bg-body rounded text-white">
    <h1 class="font-monospace text-center">Housing for UVA Students by B-07!</h1>
 </div>
@@ -36,6 +37,9 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item nav-link" href="{% url 'housing:review_list' %}">Manage comments</a>
                     </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'housing:submission' %}">Suggest a Listing</a>
                 </li>
            {% else %}
                 <li class="nav-item">
