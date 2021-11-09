@@ -55,14 +55,16 @@ class DetailView(generic.DetailView):
 def review_submit(request, housing_id):
     housing = get_object_or_404(StudentHousing, pk=housing_id)
     try:
-        selected_choice = request.POST['rating']
-    except KeyError:
+        selected_choice = int(request.POST['rating'])
+        if selected_choice is None:
+            raise ValueError()
+    except (KeyError, ValueError):
         return render(request, 'housing/studentHousingOption.html', {
-            'studentHousing': housing,
+            'studenthousing': housing,
             'error_message': "You didn't select a rating.",
         })
     else:
-        r = housing.review_set.create(rating=int(selected_choice), comment=request.POST['comment'], pub_date=timezone.now())
+        r = housing.review_set.create(rating=selected_choice, comment=request.POST['comment'], pub_date=timezone.now())
         housing.averageRating = round(housing.review_set.aggregate(Avg('rating'))['rating__avg'], 1)
         housing.save()
         User.objects.get(email=request.user.email).userreview_set.create(review_id=r.id)
