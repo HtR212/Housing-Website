@@ -158,3 +158,19 @@ class SuggestionSubmissionSuccess(TestCase):
         invalidsuggestion = SuggestedListings.objects.create(listingName=self.listingName,
                                                            listingAddress="")
         self.assertIs(invalidsuggestion.valid_parameters(), False)
+
+class SetCorrectLongLat(TestCase):
+    def setUp(self):
+        self.listingName = "Carratt Apartments"
+        self.distToGrounds1 = 100
+        self.parking1 = False
+        self.minCost1 = 999
+        self.maxCost1 = 4299
+        self.averageRating1 = 0
+        self.listingAddress = "1904 Jefferson Park Avenue, Charlottesville, VA 22903"
+
+    def testLongLat(self):
+        validhousing = StudentHousing.objects.create(name=self.listingName, distToGrounds=self.distToGrounds1,
+        parking=self.parking1, minCost=self.minCost1, maxCost=self.maxCost1, averageRating=self.averageRating1, address=self.listingAddress)
+        self.assertTrue(validhousing.lat)
+        self.assertTrue(validhousing.long)
