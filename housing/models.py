@@ -1,5 +1,5 @@
 from django.db import models
-
+import geocoder
 
 # Create your models here.
 class StudentHousing(models.Model):
@@ -18,6 +18,16 @@ class StudentHousing(models.Model):
     averageRating = models.FloatField(default=0)
     address = models.TextField(max_length=200, null=True)
     image = models.ImageField(blank=True, null=True) #makes it optional to include an image
+    #mapbox tutorial
+    lat = models.FloatField(blank=True, null=True)
+    long = models.FloatField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        g = geocoder.mapbox(self.address, key='pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ')
+        g = g.latlng #[lat, long]
+        self.lat = g[0]
+        self.long = g[1]
+        return super(StudentHousing, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
