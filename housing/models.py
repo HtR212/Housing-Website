@@ -6,8 +6,6 @@ class StudentHousing(models.Model):
     name = models.CharField(max_length=200)
     distToGrounds = models.FloatField(default=0)
     parking = models.BooleanField()
-    # cost = models.IntegerField(default=0)
-    # noiseLevel = models.IntegerField(default=0)
     minCost = models.IntegerField(default=0)
     maxCost = models.IntegerField(default=0)
     location = models.TextField(max_length=200, null=True)
@@ -18,9 +16,8 @@ class StudentHousing(models.Model):
     averageRating = models.FloatField(default=0)
     address = models.TextField(max_length=200, null=True)
     image = models.ImageField(blank=True, null=True) #makes it optional to include an image
-    #mapbox tutorial
-    lat = models.FloatField(blank=True, null=True)
-    long = models.FloatField(blank=True, null=True)
+    lat = models.FloatField(blank=True, null=True) #leave blank
+    long = models.FloatField(blank=True, null=True) #leave blank
 
     def save(self, *args, **kwargs):
         g = geocoder.mapbox(self.address, key='pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ')
