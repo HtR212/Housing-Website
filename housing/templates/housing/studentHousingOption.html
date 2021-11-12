@@ -68,7 +68,11 @@
         <li>Landlord phone: {{ studenthousing.landlordPhone }}</li>
         <li>Amenities: {{ studenthousing.amenities }}</li>
         <li>Deadline: {{ studenthousing.deadline }}</li>
-        <li>Average rating: {{ studenthousing.averageRating }}</li>
+        {% if studenthousing.averageRating == 0.0 %}
+            <li>Average rating: No ratings yet</li>
+        {% else %}
+            <li>Average rating: {{ studenthousing.averageRating }}</li>
+        {% endif %}
         <li>Address: {{ studenthousing.address }}</li>
     </ul>
     <div id='map' style='width: 800px; height: 400px; margin: auto'></div>
