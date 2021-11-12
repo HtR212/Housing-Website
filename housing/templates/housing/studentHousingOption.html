@@ -75,16 +75,23 @@
     <p>No housing details are available.</p>
 {% endif %}
 
+{% if studenthousing %}
 <div id='map' style='width: 800px; height: 400px; margin: auto'></div>
 <script>
  mapboxgl.accessToken = 'pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ';
  var map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/streets-v10',
-  center: [-78.500931, 38.035391],
+  center: [{{studenthousing.long}}, {{studenthousing.lat}}],
   zoom: 14
  });
+ const marker = new mapboxgl.Marker()
+    .setLngLat([{{studenthousing.long}}, {{studenthousing.lat}}])
+    .addTo(map);
 </script><br/>
+{% else %}
+    <p>No map available.</p>
+{% endif %}
 
 <form action="{% url 'housing:review_submit' studenthousing.id %}" method="post">
     {% csrf_token %}
