@@ -6,6 +6,7 @@
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' /> {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %} {% load socialaccount %}
 
+
 <div class="container">
     <div class="col d-flex justify-content-center">
         <div class="jumbotron">
@@ -61,7 +62,7 @@
         </div>
     </div>
 </div>
-<br><br> {% else %}
+{% else %}
 <div class="col d-flex justify-content-center">
     <div class="card" style="width: 18rem;">
         <div class="card-body">
@@ -70,23 +71,21 @@
         </div>
     </div>
 </div>
-<br><br> {% endif %}
+{% endif %}
 
+<h3 class="font-monospace text-center">See all the places to live as a UVA Student!</h3>
 
-<div class="col d-flex justify-content-center">
-    <div class="card">
-        <div class="card-body">
-            <h3 class="font-monospace text-center">See all the places to live as a UVA Student!</h3>
-            <div id='map' style='width: 800px; height: 400px; margin: auto'></div>
-            <script>
-                mapboxgl.accessToken = 'pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ';
-                var map = new mapboxgl.Map({
-                    container: 'map',
-                    style: 'mapbox://styles/mapbox/streets-v10',
-                    center: [-78.500931, 38.035391],
-                    zoom: 14
-                });
-            </script>
-        </div>
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <div id='map' style='width: 800px; height: 400px; margin: auto'></div>
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v10',
+                center: [-78.500931, 38.035391],
+                zoom: 14
+            });
+        </script>
     </div>
 </div>
