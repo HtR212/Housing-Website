@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.views import generic
 from django.shortcuts import get_object_or_404
-from .models import StudentHousing, Review, UserReview, UserFavorite, User, SuggestedListings
+from .models import StudentHousing, Review, UserReview, UserFavorite, WebUser, SuggestedListings
 from django.urls import reverse
 from django.utils import timezone
 from django.db.models import Avg
@@ -13,11 +13,11 @@ from django.db.models import Avg
 def index(request):
     if request.user.is_authenticated:
         try:
-            user = User.objects.get(email=request.user.email)
+            user = WebUser.objects.get(email=request.user.email)
             user.userName = request.user.username
             user.save()
-        except User.DoesNotExist:
-            User.objects.create(email=request.user.email, userName=request.username)
+        except WebUser.DoesNotExist:
+            WebUser.objects.create(email=request.user.email, userName=request.username)
     return render(request, 'housing/index.html')
 
 
@@ -59,12 +59,12 @@ def review_submit(request, housing_id):
         r = housing.review_set.create(rating=selected_choice, comment=request.POST['comment'], pub_date=timezone.now())
         housing.averageRating = round(housing.review_set.aggregate(Avg('rating'))['rating__avg'], 1)
         housing.save()
-        User.objects.get(email=request.user.email).userreview_set.create(review_id=r.id)
+        WebUser.objects.get(email=request.user.email).userreview_set.create(review_id=r.id)
         return HttpResponseRedirect(reverse('housing:detail', args=(housing_id,)))
 
 
 def user_review_list(request):
-    review_list = Review.objects.filter(id__in=User.objects.get(email=request.user.email).userreview_set.values_list('review_id', flat=True))
+    review_list = Review.objects.filter(id__in=WebUser.objects.get(email=request.user.email).userreview_set.values_list('review_id', flat=True))
     context = {'review_list': review_list}
     return render(request, 'housing/userReviewList.html', context)
 
@@ -81,17 +81,17 @@ def successful_submission_view(request):
 
 
 def profile_view(request):
-    context = {'currentuser': User.objects.get(email=request.user.email)}
+    context = {'currentuser': WebUser.objects.get(email=request.user.email)}
     return render(request, 'housing/profile.html', context)
 
 
 def edit_profile_view(request):
-    context = {'currentuser': User.objects.get(email=request.user.email)}
+    context = {'currentuser': WebUser.objects.get(email=request.user.email)}
     return render(request, 'housing/profileEdit.html', context)
 
 
 def submit_profile_view(request):
-    user = User.objects.get(email=request.user.email)
+    user = WebUser.objects.get(email=request.user.email)
     school_year_choices = {'FR': "Freshman", 'SO': "Sophomore", 'JR': "Junior", 'SR': "Senior", 'GR': "Graduate", 'OT': "Other"}
     try:
         gender = (request.POST['gender'])
