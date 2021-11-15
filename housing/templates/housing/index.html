@@ -34,6 +34,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">Account</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item nav-link" href="{% url 'housing:profile' %}">Profile</a>
                         <a class="dropdown-item nav-link" href="{% url 'housing:review_list' %}">Manage comments</a>
                     </div>
                 </li>
@@ -54,10 +55,10 @@
        <p class="text-success">Welcome, {{ user.username }}! Your email is {{ user.email }}</p>
    </div>
 {% else %}
-   <div class="mx-auto" style="width: 200px;">
+   <div class="col-md-3 offset-md-5">
    <h2>Please Login!</h2>
-   <a href="{% provider_login_url 'google' %}">Login with Google</a>
-   </div>
+   <a style="text-decoration:none" class="btn btn-primary col-md-3 offset-md-1" href="{% provider_login_url 'google' %}">Login with Google</a>
+   </div><br>
 {% endif %}
 
 <h3 class="font-monospace text-center">See all the places to live as a UVA Student!</h3>

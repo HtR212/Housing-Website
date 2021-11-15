@@ -13,9 +13,11 @@ from django.db.models import Avg
 def index(request):
     if request.user.is_authenticated:
         try:
-            User.objects.get(email=request.user.email)
+            user = User.objects.get(email=request.user.email)
+            user.userName = request.user.username
+            user.save()
         except User.DoesNotExist:
-            User.objects.create(email=request.user.email)
+            User.objects.create(email=request.user.email, userName=request.username)
     return render(request, 'housing/index.html')
 
 
@@ -76,3 +78,35 @@ class SuggestionView(generic.CreateView):
 
 def successful_submission_view(request):
     return render(request, 'housing/successfulSubmission.html')
+
+
+def profile_view(request):
+    context = {'currentuser': User.objects.get(email=request.user.email)}
+    return render(request, 'housing/profile.html', context)
+
+
+def edit_profile_view(request):
+    context = {'currentuser': User.objects.get(email=request.user.email)}
+    return render(request, 'housing/profileEdit.html', context)
+
+
+def submit_profile_view(request):
+    user = User.objects.get(email=request.user.email)
+    school_year_choices = {'FR': "Freshman", 'SO': "Sophomore", 'JR': "Junior", 'SR': "Senior", 'GR': "Graduate", 'OT': "Other"}
+    try:
+        gender = (request.POST['gender'])
+        age = int(request.POST['age'])
+        school_year = school_year_choices[request.POST['schoolYear']]
+        major = (request.POST['major'])
+    except KeyError:
+        return render(request, 'housing/profileEdit.html', {
+            'currentuser': user,
+            'error_message': "Unknown error",
+        })
+    else:
+        user.gender = gender
+        user.age = age
+        user.schoolYear = school_year
+        user.major = major
+        user.save()
+        return HttpResponseRedirect(reverse('housing:profile'))
