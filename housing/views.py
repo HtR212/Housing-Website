@@ -13,11 +13,11 @@ from django.db.models import Avg
 def index(request):
     if request.user.is_authenticated:
         try:
-            user = User.objects.get(email=request.user.email)
-            user.userName = request.user.username
-            user.save()
+            u = User.objects.get(email=request.user.email)
+            u.userName = request.user.username
+            u.save()
         except User.DoesNotExist:
-            User.objects.create(email=request.user.email, userName=request.username)
+            User.objects.create(email=request.user.email, userName=request.user.username)
     return render(request, 'housing/index.html')
 
 
@@ -91,7 +91,7 @@ def edit_profile_view(request):
 
 
 def submit_profile_view(request):
-    user = User.objects.get(email=request.user.email)
+    u = User.objects.get(email=request.user.email)
     school_year_choices = {'FR': "Freshman", 'SO': "Sophomore", 'JR': "Junior", 'SR': "Senior", 'GR': "Graduate", 'OT': "Other"}
     try:
         gender = (request.POST['gender'])
@@ -100,13 +100,13 @@ def submit_profile_view(request):
         major = (request.POST['major'])
     except KeyError:
         return render(request, 'housing/profileEdit.html', {
-            'currentuser': user,
+            'currentuser': u,
             'error_message': "Unknown error",
         })
     else:
-        user.gender = gender
-        user.age = age
-        user.schoolYear = school_year
-        user.major = major
-        user.save()
+        u.gender = gender
+        u.age = age
+        u.schoolYear = school_year
+        u.major = major
+        u.save()
         return HttpResponseRedirect(reverse('housing:profile'))
