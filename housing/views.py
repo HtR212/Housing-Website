@@ -19,15 +19,6 @@ def index(request):
     return render(request, 'housing/index.html')
 
 
-# def default_map(request):
-#     # TODO: move this token to Django settings from an environment variable
-#     # found in the Mapbox account settings and getting started instructions
-#     # see https://www.mapbox.com/account/ under the "Access tokens" section
-#     mapbox_access_token = 'pk.my_mapbox_access_token'
-#     return render(request, 'housing/studentHousingOption.html', 
-#                   { 'mapbox_access_token': mapbox_access_token })
-
-
 class HousingListView(generic.ListView):
     template_name = 'housing/studentHousingList.html'
     context_object_name = 'studentHousing_list'
@@ -38,7 +29,6 @@ class HousingListView(generic.ListView):
         """
         return StudentHousing.objects.filter(distToGrounds__gt=0).filter(minCost__gt=0).filter(maxCost__gt=0)\
             .filter(averageRating__gte=0).filter(averageRating__lte=5)
-        # return StudentHousing.objects.all()
 
 
 class DetailView(generic.DetailView):

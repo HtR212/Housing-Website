@@ -56,6 +56,7 @@
 <div style="width: 400px; font-size:120%">
     <p class="text-success">Hi, {{ user.username }}! Here are the details:</p>
 </div>
+<<<<<<< HEAD
 {% endif %} {% if studenthousing %}
 <ul>
     <li>Name: {{ studenthousing.name }}</li>
@@ -71,10 +72,47 @@
     <li>Average rating: {{ studenthousing.averageRating }}</li>
     <li>Address: {{ studenthousing.address }}</li>
 </ul>
+=======
+{% endif %}
+
+{% if studenthousing %}
+    <ul>
+        <li>Name: {{ studenthousing.name }}</li>
+        <li>Distance to grounds: {{ studenthousing.distToGrounds }}</li>
+        <li>Parking: {{ studenthousing.parking }}</li>
+        <li>Min cost: {{ studenthousing.minCost }}</li>
+        <li>Max cost: {{ studenthousing.maxCost }}</li>
+        <li>Location: {{ studenthousing.location }}</li>
+        <li>Landlord email: {{ studenthousing.landlordEmail }}</li>
+        <li>Landlord phone: {{ studenthousing.landlordPhone }}</li>
+        <li>Amenities: {{ studenthousing.amenities }}</li>
+        <li>Deadline: {{ studenthousing.deadline }}</li>
+        {% if studenthousing.averageRating == 0.0 %}
+            <li>Average rating: No ratings yet</li>
+        {% else %}
+            <li>Average rating: {{ studenthousing.averageRating }}</li>
+        {% endif %}
+        <li>Address: {{ studenthousing.address }}</li>
+    </ul>
+    <div id='map' style='width: 800px; height: 400px; margin: auto'></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v10',
+            center: [{{studenthousing.long}}, {{studenthousing.lat}}],
+            zoom: 14
+        });
+        const marker = new mapboxgl.Marker()
+            .setLngLat([{{studenthousing.long}}, {{studenthousing.lat}}])
+            .addTo(map);
+    </script>
+>>>>>>> de54b77a7c794b93861306640a4806d9fee38515
 {% else %}
 <p>No housing details are available.</p>
 {% endif %}
 
+<<<<<<< HEAD
 
 <div class="row">
     <div class="col-sm-6">Card 1</div>
@@ -99,6 +137,8 @@
 </div>
 
 
+=======
+>>>>>>> de54b77a7c794b93861306640a4806d9fee38515
 <form action="{% url 'housing:review_submit' studenthousing.id %}" method="post">
     {% csrf_token %} {% if error_message %}
     <p><strong>{{ error_message }}</strong></p>{% endif %} {% if user.is_authenticated %}
