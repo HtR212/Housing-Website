@@ -35,6 +35,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">Account</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item nav-link" href="{% url 'housing:profile' %}">Profile</a>
                         <a class="dropdown-item nav-link" href="{% url 'housing:review_list' %}">Manage comments</a>
                     </div>
                 </li>
@@ -49,6 +50,8 @@
         </ul>
     </div>
 </nav>
+
+{% if error_message %}<p class="col-md-4 offset-md-4"><strong>{{ error_message }}</strong></p>{% endif %}
 
 {% if user.is_authenticated %}
 <div style="width: 400px; font-size:120%">
@@ -92,9 +95,9 @@
     <p>No housing details are available.</p>
 {% endif %}
 
+{% if studenthousing %}
 <form action="{% url 'housing:review_submit' studenthousing.id %}" method="post">
     {% csrf_token %}
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
     {% if user.is_authenticated %}
     <label for="FieldSet1" class="form-label col-md-4 offset-md-4">Rating</label>
     <fieldset id="FieldSet1" class="col-md-4 offset-md-4">
@@ -115,7 +118,7 @@
           <label class="form-check-label" for="inlineRadio4">4</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5" checked="checked">
+          <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5">
           <label class="form-check-label" for="inlineRadio5">5</label>
         </div>
     </fieldset>
@@ -155,6 +158,7 @@
     </div>
     {% endif %}
 </form>
+{% endif %}
 
 <div class="list-group list-group-flush">
     {% for review in studenthousing.review_set.all %}

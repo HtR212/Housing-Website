@@ -13,9 +13,11 @@ from django.db.models import Avg
 def index(request):
     if request.user.is_authenticated:
         try:
-            User.objects.get(email=request.user.email)
+            u = User.objects.get(email=request.user.email)
+            u.userName = request.user.username
+            u.save()
         except User.DoesNotExist:
-            User.objects.create(email=request.user.email)
+            User.objects.create(email=request.user.email, userName=request.user.username)
     return render(request, 'housing/index.html')
 
 
@@ -45,14 +47,16 @@ class DetailView(generic.DetailView):
 def review_submit(request, housing_id):
     housing = get_object_or_404(StudentHousing, pk=housing_id)
     try:
-        selected_choice = request.POST['rating']
-    except KeyError:
+        selected_choice = int(request.POST['rating'])
+        if selected_choice is None:
+            raise ValueError()
+    except (KeyError, ValueError):
         return render(request, 'housing/studentHousingOption.html', {
-            'studentHousing': housing,
+            'studenthousing': housing,
             'error_message': "You didn't select a rating.",
         })
     else:
-        r = housing.review_set.create(rating=int(selected_choice), comment=request.POST['comment'], pub_date=timezone.now())
+        r = housing.review_set.create(rating=selected_choice, comment=request.POST['comment'], pub_date=timezone.now())
         housing.averageRating = round(housing.review_set.aggregate(Avg('rating'))['rating__avg'], 1)
         housing.save()
         User.objects.get(email=request.user.email).userreview_set.create(review_id=r.id)
@@ -74,3 +78,35 @@ class SuggestionView(generic.CreateView):
 
 def successful_submission_view(request):
     return render(request, 'housing/successfulSubmission.html')
+
+
+def profile_view(request):
+    context = {'currentuser': User.objects.get(email=request.user.email)}
+    return render(request, 'housing/profile.html', context)
+
+
+def edit_profile_view(request):
+    context = {'currentuser': User.objects.get(email=request.user.email)}
+    return render(request, 'housing/profileEdit.html', context)
+
+
+def submit_profile_view(request):
+    u = User.objects.get(email=request.user.email)
+    school_year_choices = {'FR': "Freshman", 'SO': "Sophomore", 'JR': "Junior", 'SR': "Senior", 'GR': "Graduate", 'OT': "Other"}
+    try:
+        gender = (request.POST['gender'])
+        age = int(request.POST['age'])
+        school_year = school_year_choices[request.POST['schoolYear']]
+        major = (request.POST['major'])
+    except KeyError:
+        return render(request, 'housing/profileEdit.html', {
+            'currentuser': u,
+            'error_message': "Unknown error",
+        })
+    else:
+        u.gender = gender
+        u.age = age
+        u.schoolYear = school_year
+        u.major = major
+        u.save()
+        return HttpResponseRedirect(reverse('housing:profile'))

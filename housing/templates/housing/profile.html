@@ -3,6 +3,8 @@
 <!-- Bootstrap -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
 
 {% load bootstrap5 %}
 {% bootstrap_css %}
@@ -31,7 +33,7 @@
                     <a class="nav-link" href="{% url 'housing:logout' %}">Logout</a>
                 </li>
                 <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">Account</a>
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">Account</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item nav-link" href="{% url 'housing:profile' %}">Profile</a>
                         <a class="dropdown-item nav-link" href="{% url 'housing:review_list' %}">Manage comments</a>
@@ -49,22 +51,28 @@
     </div>
 </nav>
 
-{% if user.is_authenticated %}
-<div style="width: 400px; font-size:120%">
-    <p class="text-success">Hi, {{ user.username }}! Here are your reviews:</p>
-</div>
-{% endif %}
+<h1 class="display-3 col-md-4 offset-md-4">Profile</h1><br>
 
-{% if review_list %}
-    <dl style="margin-left: 10px">
-    {% for review in review_list %}
-        <dt class="text-uppercase fw-bolder"><a style="text-decoration:none" href="{% url 'housing:detail' review.house.id %}"><strong>{{ review.house }}</strong></a></dt>
-        <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Rating: {{ review.rating }}</em></dd>
-        <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Review: {{ review.comment }}</em></dd>
-        <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Posted on: {{ review.pub_date }}</em></dd>
-        <br>
-    {% endfor %}
-    </dl>
+{% if currentuser %}
+    <ul class="list-group col-md-3 offset-md-4">
+        <label class="form-label">User Name</label>
+        <li class="list-group-item">{{ currentuser.userName }}</li><br>
+        <label class="form-label">Email</label>
+        <li class="list-group-item">{{ currentuser.email }}</li><br>
+        <label class="form-label">Gender</label>
+        <li class="list-group-item">{{ currentuser.gender }}</li><br>
+        <label class="form-label">Age</label>
+        {% if currentuser.age != 0 %}
+            <li class="list-group-item">{{ currentuser.age }}</li><br>
+        {% else %}
+            <li class="list-group-item"></li><br>
+        {% endif %}
+        <label class="form-label">School Year</label>
+        <li class="list-group-item">{{ currentuser.schoolYear }}</li><br>
+        <label class="form-label">Major</label>
+        <li class="list-group-item">{{ currentuser.major }}</li><br>
+    </ul>
+    <a style="text-decoration:none" class="btn btn-primary col-md-1 offset-md-5" href="{% url 'housing:edit_profile' %}">Edit</a>
 {% else %}
-    <p>No reviews available.</p>
+    <p>No profile available.</p>
 {% endif %}

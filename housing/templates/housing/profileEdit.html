@@ -3,6 +3,8 @@
 <!-- Bootstrap -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
 
 {% load bootstrap5 %}
 {% bootstrap_css %}
@@ -12,6 +14,8 @@
 <div style="width: 100%" class="shadow p-2 mb-3 bg-body rounded text-white">
     <h3 class="font-monospace text-center">Housing for UVA Students by B-07!</h3>
 </div>
+
+{% if error_message %}<p class="col-md-4 offset-md-4"><strong>{{ error_message }}</strong></p>{% endif %}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand">Explore!</a>
@@ -49,37 +53,47 @@
     </div>
 </nav>
 
-{% if user.is_authenticated %}
-<div style="width: 400px; font-size:120%">
-    <p class="text-success">Hi, {{ user.username }}! Here are the listings:</p>
-</div>
-{% endif %}
+<h1 class="display-3 col-md-4 offset-md-4">Profile Edit</h1><br>
 
-{% if studentHousing_list %}
-    <dl style="margin-left: 10px">
-    {% for studentHousing in studentHousing_list %}
-        <dt class="text-uppercase fw-bolder"><a style="text-decoration:none" href="{% url 'housing:detail' studentHousing.id %}"><strong>{{ studentHousing.name }}</strong></a></dt>
-        <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Distance to Grounds: {{ studentHousing.distToGrounds }}</em></dd>
-        <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Location: {{ studentHousing.location }}</em></dd>
-        <dd class="badge bg-white text-danger text-primary text-lowercase fw-light"><em>Cost: ${{ studentHousing.minCost }} - ${{ studentHousing.maxCost }}</em></dd>
+{% if currentuser %}
+<ul class="list-group col-md-3 offset-md-4">
+    <label class="form-label">User Name</label>
+    <li class="list-group-item">{{ currentuser.userName }}</li><br>
+    <label class="form-label">Email</label>
+    <li class="list-group-item">{{ currentuser.email }}</li><br>
+</ul>
+<form action="{% url 'housing:submit_profile' %}" method="post">
+    {% csrf_token %}
+    <div class="col-md-3 offset-md-4">
+        <label for="Textarea1" class="form-label">Gender</label>
+        <input class="form-control w-100" id="Textarea1" name="gender" value={{currentuser.gender}}></input>
         <br>
-        {% if studentHousing.image %}
-            <img width="25%" src="{{  studentHousing.image.url }}"> 
-        {% endif %}
-        <br><br>
-    {% endfor %}
-    </dl>
+    </div>
+    <div class="col-md-3 offset-md-4">
+        <label for="Textarea2" class="form-label">Age</label>
+        <input class="form-control" id="Textarea2" name="age" value={{currentuser.age}}></input>
+        <br>
+    </div>
+    <div class="col-md-3 offset-md-4">
+        <label for="Textarea3" class="form-label">School Year</label>
+        <select class="form-select" aria-label="Default select example" id="Textarea3" name="schoolYear">
+            <option selected>{{currentuser.schoolYear}}</option>
+            <option value="FR">Freshman</option>
+            <option value="SO">Sophomore</option>
+            <option value="JR">Junior</option>
+            <option value="SR">Senior</option>
+            <option value="GR">Graduate</option>
+            <option value="OT">Other</option>
+        </select>
+        <br>
+    </div>
+    <div class="col-md-3 offset-md-4">
+        <label for="Textarea4" class="form-label">Major</label>
+        <input class="form-control w-100" id="Textarea4" name="major" value={{currentuser.major}}></input>
+        <br>
+    </div>
+    <button class="btn btn-primary col-md-1 offset-md-5" type="submit">Submit</button>
+</form>
 {% else %}
-    <p>No housing options are available.</p>
+    <p>No profile available.</p>
 {% endif %}
-
-
-<div style="bottom:0; width:100%" class="card text-center">
-    <div class="card-body">
-      <h5 class="card-title">Project B-07</h5>
-      <p class="card-text">CS3240 Off-Grounds Housing</p>
-    </div>
-    <div class="card-footer text-muted">
-      c. 2021
-    </div>
-</div>

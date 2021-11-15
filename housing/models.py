@@ -54,6 +54,11 @@ class Review(models.Model):
 
 class User(models.Model):
     email = models.CharField(max_length=320, primary_key=True) # According to Google, the longest email address could have 320 characters
+    gender = models.CharField(max_length=20, default="")
+    userName = models.CharField(max_length=100, default="")
+    age = models.IntegerField(default=0)
+    schoolYear = models.CharField(max_length=50, default="")
+    major = models.CharField(max_length=50, default="")
 
     def __str__(self):
         return self.email

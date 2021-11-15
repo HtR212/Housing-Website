@@ -14,4 +14,7 @@ urlpatterns = [
     path('manage_reviews/', views.user_review_list, name='review_list'),
     path('submission/', views.SuggestionView.as_view(), name='submission'),
     path('submission/success/', views.successful_submission_view, name='success'),
+    path('profile/', views.profile_view, name='profile'),
+    path('profile/edit/', views.edit_profile_view, name='edit_profile'),
+    path('profile/submit', views.submit_profile_view, name='submit_profile'),
 ]
