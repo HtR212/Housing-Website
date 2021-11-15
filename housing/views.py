@@ -92,11 +92,11 @@ def edit_profile_view(request):
 
 def submit_profile_view(request):
     u = User.objects.get(email=request.user.email)
-    school_year_choices = {'FR': "Freshman", 'SO': "Sophomore", 'JR': "Junior", 'SR': "Senior", 'GR': "Graduate", 'OT': "Other"}
+    # school_year_choices = {'FR': "Freshman", 'SO': "Sophomore", 'JR': "Junior", 'SR': "Senior", 'GR': "Graduate", 'OT': "Other"}
     try:
         gender = (request.POST['gender'])
         age = int(request.POST['age'])
-        school_year = school_year_choices[request.POST['schoolYear']]
+        school_year = request.POST['schoolYear']
         major = (request.POST['major'])
     except KeyError:
         return render(request, 'housing/profileEdit.html', {
