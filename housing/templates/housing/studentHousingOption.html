@@ -61,47 +61,62 @@
 {% endif %}
 
 {% if studenthousing %}
-    <ul>
-        <li>Name: {{ studenthousing.name }}</li>
-        <li>Distance to grounds: {{ studenthousing.distToGrounds }}</li>
-        <li>Parking: {{ studenthousing.parking }}</li>
-        <li>Min cost: {{ studenthousing.minCost }}</li>
-        <li>Max cost: {{ studenthousing.maxCost }}</li>
-        <li>Location: {{ studenthousing.location }}</li>
-        <li>Landlord email: {{ studenthousing.landlordEmail }}</li>
-        <li>Landlord phone: {{ studenthousing.landlordPhone }}</li>
-        <li>Amenities: {{ studenthousing.amenities }}</li>
-        <li>Deadline: {{ studenthousing.deadline }}</li>
-        {% if studenthousing.averageRating == 0.0 %}
-            <li>Average rating: No ratings yet</li>
-        {% else %}
-            <li>Average rating: {{ studenthousing.averageRating }}</li>
-        {% endif %}
-        <li>Address: {{ studenthousing.address }}</li>
-    </ul>
+<div class="container">
+    <div class="row">
+      <div class="col-4">
+        <div class="card">
+            <li class="list-group-item">Name: {{ studenthousing.name }}</li>
+            <li class="list-group-item">Distance to grounds: {{ studenthousing.distToGrounds }}</li>
+            <li class="list-group-item">Parking: {{ studenthousing.parking }}</li>
+           {% if studenthousing.averageRating == 0.0 %}
+            <li class="list-group-item">Average rating: No ratings yet</li>
+           {% else %}
+            <li class="list-group-item">Average rating: {{ studenthousing.averageRating }}</li>
+            {% endif %}            
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+            <li class="list-group-item">Min cost: {{ studenthousing.minCost }}</li>
+            <li class="list-group-item">Max cost: {{ studenthousing.maxCost }}</li>
+            <li class="list-group-item">Location: {{ studenthousing.location }}</li>
+            <li class="list-group-item">Landlord email: {{ studenthousing.landlordEmail }}</li>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+            
+            <li class="list-group-item">Landlord phone: {{ studenthousing.landlordPhone }}</li>
+            <li class="list-group-item">Amenities: {{ studenthousing.amenities }}</li>   
+            <li class="list-group-item">Deadline: {{ studenthousing.deadline }}</li>
+            <li class="list-group-item">Address: {{ studenthousing.address }}</li>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
 
-        <div class="col d-flex justify-content-center">
-            <div class="card" >
-                <div class="card-body">
-                    <div id='map' style='width: 400px; height: 400px; margin: auto'></div>
-                    <script>
-                        mapboxgl.accessToken = 'pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ';
-                        var map = new mapboxgl.Map({
-                            container: 'map',
-                            style: 'mapbox://styles/mapbox/streets-v10',
-                            center: [{{studenthousing.long}}, {{studenthousing.lat}}],
-                            zoom: 14
-                        });
-                        const marker = new mapboxgl.Marker()
-                            .setLngLat([{{studenthousing.long}}, {{studenthousing.lat}}])
-                            .addTo(map);
-                    </script>          
-                </div>
+    <div class="col d-flex justify-content-center">
+        <div class="card" >
+            <div class="card-body">
+                <div id='map' style='width: 400px; height: 400px; margin: auto'></div>
+                <script>
+                    mapboxgl.accessToken = 'pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ';
+                    var map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/mapbox/streets-v10',
+                        center: [{{studenthousing.long}}, {{studenthousing.lat}}],
+                        zoom: 14
+                    });
+                    const marker = new mapboxgl.Marker()
+                        .setLngLat([{{studenthousing.long}}, {{studenthousing.lat}}])
+                        .addTo(map);
+                </script>          
             </div>
         </div>
+    </div>
 
 
 
@@ -111,68 +126,69 @@
 {% endif %}
 
 {% if studenthousing %}
-<form action="{% url 'housing:review_submit' studenthousing.id %}" method="post">
-    {% csrf_token %}
-    {% if user.is_authenticated %}
-    <label for="FieldSet1" class="form-label col-md-4 offset-md-4">Rating</label>
-    <fieldset id="FieldSet1" class="col-md-4 offset-md-4">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1">
-          <label class="form-check-label" for="inlineRadio1">1</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="2">
-          <label class="form-check-label" for="inlineRadio2">2</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="3">
-          <label class="form-check-label" for="inlineRadio3">3</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value="4">
-          <label class="form-check-label" for="inlineRadio4">4</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5">
-          <label class="form-check-label" for="inlineRadio5">5</label>
-        </div>
-    </fieldset>
-    <div class="col-md-4 offset-md-4">
-        <label for="Textarea1" class="form-label">Review</label>
-        <textarea class="form-control w-100" id="Textarea1" name="comment" rows="3" placeholder="Please write your comment here."></textarea>
-        <br>
-        <button class="btn btn-primary col-md-2 offset-md-5" type="submit">Submit</button>
-    </div><br>
-    {% else %}
-    <label for="FieldSet2" class="form-label col-md-4 offset-md-4">Rating</label>
-    <fieldset id="FieldSet2" class="col-md-4 offset-md-4">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio6" value=1 disabled>
-          <label class="form-check-label" for="inlineRadio6">1</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio7" value=2 disabled>
-          <label class="form-check-label" for="inlineRadio7">2</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio8" value=3 disabled>
-          <label class="form-check-label" for="inlineRadio8">3</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio9" value=4 disabled>
-          <label class="form-check-label" for="inlineRadio9">4</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio10" value=5 disabled>
-          <label class="form-check-label" for="inlineRadio10">5</label>
-        </div>
-    </fieldset>
-    <div class="col-md-4 offset-md-4">
-        <label for="Textarea2" class="form-label">Review</label>
-        <textarea class="form-control" id="Textarea2" name="comment" rows="3" placeholder="Please login to submit a review." disabled></textarea>
-    </div>
-    {% endif %}
-</form>
+
+            <form action="{% url 'housing:review_submit' studenthousing.id %}" method="post">
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                <label for="FieldSet1" class="form-label col-md-4 offset-md-4">Rating</label>
+                <fieldset id="FieldSet1" class="col-md-4 offset-md-4">
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1">
+                    <label class="form-check-label" for="inlineRadio1">1</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="2">
+                    <label class="form-check-label" for="inlineRadio2">2</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="3">
+                    <label class="form-check-label" for="inlineRadio3">3</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value="4">
+                    <label class="form-check-label" for="inlineRadio4">4</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5">
+                    <label class="form-check-label" for="inlineRadio5">5</label>
+                    </div>
+                </fieldset>
+                <div class="col-md-4 offset-md-4">
+                    <label for="Textarea1" class="form-label">Review</label>
+                    <textarea class="form-control w-100" id="Textarea1" name="comment" rows="3" placeholder="Please write your comment here."></textarea>
+                    <br>
+                    <button class="btn btn-primary col-md-2 offset-md-5" type="submit">Submit</button>
+                </div><br>
+                {% else %}
+                <label for="FieldSet2" class="form-label col-md-4 offset-md-4">Rating</label>
+                <fieldset id="FieldSet2" class="col-md-4 offset-md-4">
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Rating" id="inlineRadio6" value=1 disabled>
+                    <label class="form-check-label" for="inlineRadio6">1</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Rating" id="inlineRadio7" value=2 disabled>
+                    <label class="form-check-label" for="inlineRadio7">2</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Rating" id="inlineRadio8" value=3 disabled>
+                    <label class="form-check-label" for="inlineRadio8">3</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Rating" id="inlineRadio9" value=4 disabled>
+                    <label class="form-check-label" for="inlineRadio9">4</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Rating" id="inlineRadio10" value=5 disabled>
+                    <label class="form-check-label" for="inlineRadio10">5</label>
+                    </div>
+                </fieldset>
+                <div class="col-md-4 offset-md-4">
+                    <label for="Textarea2" class="form-label">Review</label>
+                    <textarea class="form-control" id="Textarea2" name="comment" rows="3" placeholder="Please login to submit a review." disabled></textarea>
+                </div>
+                {% endif %}
+            </form>
 {% endif %}
 
 <div class="list-group list-group-flush">
