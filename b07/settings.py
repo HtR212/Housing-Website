@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'housing.apps.HousingConfig',
-    'bootstrap5'
+    'bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -179,3 +179,23 @@ try:
         django_heroku.settings(locals())
 except ImportError:
     found = False
+
+
+#changes related to aws storage, found from this tutorial: https://www.youtube.com/watch?v=nzLMA9WZqMM
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = 'AKIAWJSE36SQ4DURRV2M'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'housing-b07-listing-submissions'
+AWS_QUERYSTRING_AUTH = False
+
+
+
+
+
+
+
+
+
+
+
+

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.views import generic
 from django.shortcuts import get_object_or_404
-from .models import StudentHousing, Review, UserReview, UserFavorite, User, SuggestedListings
+from .models import StudentHousing, Review, UserReview, UserFavorite, User, SuggestedListings, Storage
 from django.urls import reverse
 from django.utils import timezone
 from django.db.models import Avg
@@ -74,6 +74,12 @@ class SuggestionView(generic.CreateView):
     template_name = "housing/submission.html"
     fields = ['listingName', 'listingAddress']
     success_url = 'success/'
+
+#class SuggestionView(generic.CreateView):
+    #model = Storage
+    #template_name = "housing/submission.html"
+    #fields = ['name', 'address', 'picture']
+    #success_url = 'success/'
 
 
 def successful_submission_view(request):
