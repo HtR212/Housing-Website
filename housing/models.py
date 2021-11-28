@@ -16,7 +16,6 @@ class StudentHousing(models.Model):
     averageRating = models.FloatField(default=0)
     address = models.TextField(max_length=200, null=True)
     image = models.ImageField(blank=True, null=True) #makes it optional to include an image
-    #image = models.FileField(upload_to='media/')
     lat = models.FloatField(blank=True, null=True) #leave blank
     long = models.FloatField(blank=True, null=True) #leave blank
 
@@ -94,12 +93,4 @@ class SuggestedListings(models.Model):
         else:
             return False
 
-
-class Storage(models.Model):
-    name = models.CharField(max_length=200)
-    adddress = models.CharField(max_length=500)
-    picture = models.FileField(upload_to='media/')
-
-    def  __str__(self):
-        return str(self.name)
 
