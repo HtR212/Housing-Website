@@ -37,7 +37,8 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">Account</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item nav-link" href="{% url 'housing:review_list' %}">Manage comments</a>
+                        <a class="dropdown-item nav-link" style="color:black;" href="{% url 'housing:profile' %}">Profile</a>
+                        <a class="dropdown-item nav-link" style="color:black;" href="{% url 'housing:review_list' %}">Manage comments</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -52,58 +53,73 @@
         </div>
     </div>
 </nav>
+
+{% if error_message %}<p class="col-md-4 offset-md-4"><strong>{{ error_message }}</strong></p>{% endif %}
+
 {% if user.is_authenticated %}
 <div style="width: 400px; font-size:120%">
     <p class="text-success">Hi, {{ user.username }}! Here are the details:</p>
 </div>
-{% endif %} {% if studenthousing %}
-<ul>
-    <li>Name: {{ studenthousing.name }}</li>
-    <li>Distance to grounds: {{ studenthousing.distToGrounds }}</li>
-    <li>Parking: {{ studenthousing.parking }}</li>
-    <li>Min cost: {{ studenthousing.minCost }}</li>
-    <li>Max cost: {{ studenthousing.maxCost }}</li>
-    <li>Location: {{ studenthousing.location }}</li>
-    <li>Landlord email: {{ studenthousing.landlordEmail }}</li>
-    <li>Landlord phone: {{ studenthousing.landlordPhone }}</li>
-    <li>Amenities: {{ studenthousing.amenities }}</li>
-    <li>Deadline: {{ studenthousing.deadline }}</li>
-    <li>Average rating: {{ studenthousing.averageRating }}</li>
-    <li>Address: {{ studenthousing.address }}</li>
-</ul>
-{% else %}
-<p>No housing details are available.</p>
 {% endif %}
 
-
-<div class="row">
-    <div class="col-sm-6">Card 1</div>
-    <div class="col-sm-6">
-        <div class="col d-flex justify-content-center">
-            <div class="card">
-                <div class="card-body">
-                    <div id='map' style='width: 400px; height: 400px; margin: auto'></div>
-                    <script>
-                        mapboxgl.accessToken = 'pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ';
-                        var map = new mapboxgl.Map({
-                            container: 'map',
-                            style: 'mapbox://styles/mapbox/streets-v10',
-                            center: [-78.500931, 38.035391],
-                            zoom: 14
-                        });
-                    </script>
+{% if studenthousing %}
+    <div class="row border-bottom border-secondary">
+        <div class="col-sm-7">
+             <div class="offset-sm-1">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <p class='card-text'><b>Name: </b>{{ studenthousing.name }}</p>
+                        <p class='card-text'><b>Distance </b>to grounds: {{ studenthousing.distToGrounds }}</p>
+                        <p class='card-text'><b>Parking: </b>{{ studenthousing.parking }}</p>
+                        <p class='card-text'><b>Min cost: </b>{{ studenthousing.minCost }}</p>
+                        <p class='card-text'><b>Max cost: </b>{{ studenthousing.maxCost }}</p>
+                        <p class='card-text'><b>Location: </b>{{ studenthousing.location }}</p>
+                        <p class='card-text'><b>Landlord email: </b>{{ studenthousing.landlordEmail }}</p>
+                        <p class='card-text'><b>Landlord phone: </b>{{ studenthousing.landlordPhone }}</p>
+                        <p class='card-text'><b>Amenities: </b>{{ studenthousing.amenities }}</p>
+                        <p class='card-text'><b>Deadline: </b>{{ studenthousing.deadline }}</p>
+                        {% if studenthousing.averageRating == 0.0 %}
+                            <p class='card-text'><b>Average rating: </b>No ratings yet</p>
+                        {% else %}
+                            <p class='card-text'><b>Average rating: </b>{{ studenthousing.averageRating }}</p>
+                        {% endif %}
+                        <p class='card-text'><b>Address: </b>{{ studenthousing.address }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="col-sm-11">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div id='map' style='width: 500px; height: 400px; margin: auto'></div>
+                        <script>
+                            mapboxgl.accessToken = 'pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ';
+                            var map = new mapboxgl.Map({
+                                container: 'map',
+                                style: 'mapbox://styles/mapbox/streets-v10',
+                                center: [{{studenthousing.long}}, {{studenthousing.lat}}],
+                                zoom: 14
+                            });
+                            const marker = new mapboxgl.Marker()
+                                .setLngLat([{{studenthousing.long}}, {{studenthousing.lat}}])
+                                .addTo(map);
+                        </script>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+{% else %}
+<p>No housing details are available.</p>
+{% endif %}<br>
 
-
+<div class="container col-md-8 offset-md-2 border-secondary border-bottom"><br>
 <form action="{% url 'housing:review_submit' studenthousing.id %}" method="post">
-    {% csrf_token %} {% if error_message %}
-    <p><strong>{{ error_message }}</strong></p>{% endif %} {% if user.is_authenticated %}
-    <label for="FieldSet1" class="form-label col-md-4 offset-md-4">Rating</label>
-    <fieldset id="FieldSet1" class="col-md-4 offset-md-4">
+    {% csrf_token %}
+    {% if user.is_authenticated %}
+    <label for="FieldSet1" class="form-label col-md-6 offset-md-3">Rating</label>
+    <fieldset id="FieldSet1" class="col-md-6 offset-md-3">
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1">
             <label class="form-check-label" for="inlineRadio1">1</label>
@@ -121,18 +137,18 @@
             <label class="form-check-label" for="inlineRadio4">4</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5" checked="checked">
-            <label class="form-check-label" for="inlineRadio5">5</label>
+          <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5">
+          <label class="form-check-label" for="inlineRadio5">5</label>
         </div>
     </fieldset>
-    <div class="col-md-4 offset-md-4">
+    <div class="col-md-6 offset-md-3">
         <label for="Textarea1" class="form-label">Review</label>
         <textarea class="form-control w-100" id="Textarea1" name="comment" rows="3" placeholder="Please write your comment here."></textarea>
         <br>
-        <button class="btn btn-primary col-md-2 offset-md-5" type="submit">Submit</button>
+        <button class="btn btn-primary offset-md-5" type="submit">Submit</button>
     </div><br> {% else %}
-    <label for="FieldSet2" class="form-label col-md-4 offset-md-4">Rating</label>
-    <fieldset id="FieldSet2" class="col-md-4 offset-md-4">
+    <label for="FieldSet2" class="form-label col-md-6 offset-md-3">Rating</label>
+    <fieldset id="FieldSet2" class="col-md-6 offset-md-3">
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="Rating" id="inlineRadio6" value=1 disabled>
             <label class="form-check-label" for="inlineRadio6">1</label>
@@ -154,12 +170,13 @@
             <label class="form-check-label" for="inlineRadio10">5</label>
         </div>
     </fieldset>
-    <div class="col-md-4 offset-md-4">
+    <div class="col-md-6 offset-md-3">
         <label for="Textarea2" class="form-label">Review</label>
         <textarea class="form-control" id="Textarea2" name="comment" rows="3" placeholder="Please login to submit a review." disabled></textarea>
-    </div>
+    </div><br>
     {% endif %}
-</form>
+</form><br>
+</div><br>
 
 <div class="list-group list-group-flush">
     {% for review in studenthousing.review_set.all %}
