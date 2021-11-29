@@ -37,7 +37,8 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">Account</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item nav-link" href="{% url 'housing:review_list' %}">Manage comments</a>
+                        <a class="dropdown-item nav-link" style="color:black;" href="{% url 'housing:profile' %}">Profile</a>
+                        <a class="dropdown-item nav-link" style="color:black;" href="{% url 'housing:review_list' %}">Manage comments</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -62,7 +63,8 @@
         </div>
     </div>
 </div>
-<br><br> {% else %}
+<br><br>
+{% else %}
 <div class="col d-flex justify-content-center">
     <div class="card" style="width: 18rem;">
         <div class="card-body">
@@ -71,7 +73,8 @@
         </div>
     </div>
 </div>
-<br><br> {% endif %}
+<br><br>
+{% endif %}
 
 
 <div class="col d-flex justify-content-center">
