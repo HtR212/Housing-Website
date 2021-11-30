@@ -88,8 +88,7 @@
             zoom: 14
         });
         const marker = new mapboxgl.Marker()
-            .setLngLat([{{studenthousing.long}}, {{studenthousing.lat}}])
-            .addTo(map);
+            .setLngLat([{{studenthousing.long}}, {{studenthousing.lat}}]).addTo(map);
     </script>
 {% else %}
     <p>No housing details are available.</p>
