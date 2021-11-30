@@ -4,50 +4,53 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' /> {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %} {% load socialaccount %}
 
-{% load bootstrap5 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-{% load socialaccount %}
 
-<div style="width: 100%" class="shadow p-2 mb-3 bg-body rounded text-white">
-    <h3 class="font-monospace text-center">Housing for UVA Students by B-07!</h3>
+<div class="container">
+    <div class="col d-flex justify-content-center">
+        <div class="jumbotron">
+            <h1 class="display-4">Housing for UVA Students by B-07!</h1>
+            <hr class="my-4">
+        </div>
+    </div>
 </div>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand">Explore!</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+        <a class="navbar-brand">Explore!</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">Homepage</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'housing:studentHousingList' %}">Browse Listings</a>
-            </li>
-            {% if user.is_authenticated %}
+      </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Homepage</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'housing:studentHousingList' %}">Browse Listings</a>
+                </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'housing:logout' %}">Logout</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">Account</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item nav-link" href="{% url 'housing:profile' %}">Profile</a>
-                        <a class="dropdown-item nav-link" href="{% url 'housing:review_list' %}">Manage comments</a>
+                        <a class="dropdown-item nav-link" style="color:black;" href="{% url 'housing:profile' %}">Profile</a>
+                        <a class="dropdown-item nav-link" style="color:black;" href="{% url 'housing:review_list' %}">Manage comments</a>
                     </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'housing:submission' %}">Suggest a Listing</a>
                 </li>
-            {% else %}
+                {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% provider_login_url 'google' %}">Login</a>
                 </li>
-            {% endif %}
-        </ul>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 </nav>
 
@@ -60,123 +63,138 @@
 {% endif %}
 
 {% if studenthousing %}
-    <ul>
-        <li>Name: {{ studenthousing.name }}</li>
-        <li>Distance to grounds: {{ studenthousing.distToGrounds }}</li>
-        <li>Parking: {{ studenthousing.parking }}</li>
-        <li>Min cost: {{ studenthousing.minCost }}</li>
-        <li>Max cost: {{ studenthousing.maxCost }}</li>
-        <li>Location: {{ studenthousing.location }}</li>
-        <li>Landlord email: {{ studenthousing.landlordEmail }}</li>
-        <li>Landlord phone: {{ studenthousing.landlordPhone }}</li>
-        <li>Amenities: {{ studenthousing.amenities }}</li>
-        <li>Deadline: {{ studenthousing.deadline }}</li>
-        {% if studenthousing.averageRating == 0.0 %}
-            <li>Average rating: No ratings yet</li>
-        {% else %}
-            <li>Average rating: {{ studenthousing.averageRating }}</li>
-        {% endif %}
-        <li>Address: {{ studenthousing.address }}</li>
-    </ul>
-    <div id='map' style='width: 800px; height: 400px; margin: auto'></div>
-    <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ';
-        var map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v10',
-            center: [{{studenthousing.long}}, {{studenthousing.lat}}],
-            zoom: 14
-        });
-        const marker = new mapboxgl.Marker()
-            .setLngLat([{{studenthousing.long}}, {{studenthousing.lat}}]).addTo(map);
-    </script>
+    <div class="row border-bottom border-secondary">
+        <div class="col-sm-7">
+             <div class="offset-sm-1">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <p class='card-text'><b>Name: </b>{{ studenthousing.name }}</p>
+                        <p class='card-text'><b>Distance </b>to grounds: {{ studenthousing.distToGrounds }}</p>
+                        <p class='card-text'><b>Parking: </b>{{ studenthousing.parking }}</p>
+                        <p class='card-text'><b>Min cost: </b>{{ studenthousing.minCost }}</p>
+                        <p class='card-text'><b>Max cost: </b>{{ studenthousing.maxCost }}</p>
+                        <p class='card-text'><b>Location: </b>{{ studenthousing.location }}</p>
+                        <p class='card-text'><b>Landlord email: </b>{{ studenthousing.landlordEmail }}</p>
+                        <p class='card-text'><b>Landlord phone: </b>{{ studenthousing.landlordPhone }}</p>
+                        <p class='card-text'><b>Amenities: </b>{{ studenthousing.amenities }}</p>
+                        <p class='card-text'><b>Deadline: </b>{{ studenthousing.deadline }}</p>
+                        {% if studenthousing.averageRating == 0.0 %}
+                            <p class='card-text'><b>Average rating: </b>No ratings yet</p>
+                        {% else %}
+                            <p class='card-text'><b>Average rating: </b>{{ studenthousing.averageRating }}</p>
+                        {% endif %}
+                        <p class='card-text'><b>Address: </b>{{ studenthousing.address }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="col-sm-11">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <div id='map' style='width: 500px; height: 400px; margin: auto'></div>
+                        <script>
+                            mapboxgl.accessToken = 'pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ';
+                            var map = new mapboxgl.Map({
+                                container: 'map',
+                                style: 'mapbox://styles/mapbox/streets-v10',
+                                center: [{{studenthousing.long}}, {{studenthousing.lat}}],
+                                zoom: 14
+                            });
+                            const marker = new mapboxgl.Marker()
+                                .setLngLat([{{studenthousing.long}}, {{studenthousing.lat}}])
+                                .addTo(map);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% else %}
-    <p>No housing details are available.</p>
-{% endif %}
+<p>No housing details are available.</p>
+{% endif %}<br>
 
-{% if studenthousing %}
+<div class="container col-md-8 offset-md-2 border-secondary border-bottom"><br>
 <form action="{% url 'housing:review_submit' studenthousing.id %}" method="post">
     {% csrf_token %}
     {% if user.is_authenticated %}
-    <label for="FieldSet1" class="form-label col-md-4 offset-md-4">Rating</label>
-    <fieldset id="FieldSet1" class="col-md-4 offset-md-4">
+    <label for="FieldSet1" class="form-label col-md-6 offset-md-3">Rating</label>
+    <fieldset id="FieldSet1" class="col-md-6 offset-md-3">
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1">
-          <label class="form-check-label" for="inlineRadio1">1</label>
+            <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1">
+            <label class="form-check-label" for="inlineRadio1">1</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="2">
-          <label class="form-check-label" for="inlineRadio2">2</label>
+            <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="2">
+            <label class="form-check-label" for="inlineRadio2">2</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="3">
-          <label class="form-check-label" for="inlineRadio3">3</label>
+            <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="3">
+            <label class="form-check-label" for="inlineRadio3">3</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value="4">
-          <label class="form-check-label" for="inlineRadio4">4</label>
+            <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value="4">
+            <label class="form-check-label" for="inlineRadio4">4</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5">
-          <label class="form-check-label" for="inlineRadio5">5</label>
+            <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5">
+            <label class="form-check-label" for="inlineRadio5">5</label>
         </div>
     </fieldset>
-    <div class="col-md-4 offset-md-4">
+    <div class="col-md-6 offset-md-3">
         <label for="Textarea1" class="form-label">Review</label>
         <textarea class="form-control w-100" id="Textarea1" name="comment" rows="3" placeholder="Please write your comment here."></textarea>
         <br>
-        <button class="btn btn-primary col-md-2 offset-md-5" type="submit">Submit</button>
-    </div><br>
-    {% else %}
-    <label for="FieldSet2" class="form-label col-md-4 offset-md-4">Rating</label>
-    <fieldset id="FieldSet2" class="col-md-4 offset-md-4">
+        <button class="btn btn-primary offset-md-5" type="submit">Submit</button>
+    </div><br> {% else %}
+    <label for="FieldSet2" class="form-label col-md-6 offset-md-3">Rating</label>
+    <fieldset id="FieldSet2" class="col-md-6 offset-md-3">
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio6" value=1 disabled>
-          <label class="form-check-label" for="inlineRadio6">1</label>
+            <input class="form-check-input" type="radio" name="Rating" id="inlineRadio6" value=1 disabled>
+            <label class="form-check-label" for="inlineRadio6">1</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio7" value=2 disabled>
-          <label class="form-check-label" for="inlineRadio7">2</label>
+            <input class="form-check-input" type="radio" name="Rating" id="inlineRadio7" value=2 disabled>
+            <label class="form-check-label" for="inlineRadio7">2</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio8" value=3 disabled>
-          <label class="form-check-label" for="inlineRadio8">3</label>
+            <input class="form-check-input" type="radio" name="Rating" id="inlineRadio8" value=3 disabled>
+            <label class="form-check-label" for="inlineRadio8">3</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio9" value=4 disabled>
-          <label class="form-check-label" for="inlineRadio9">4</label>
+            <input class="form-check-input" type="radio" name="Rating" id="inlineRadio9" value=4 disabled>
+            <label class="form-check-label" for="inlineRadio9">4</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="Rating" id="inlineRadio10" value=5 disabled>
-          <label class="form-check-label" for="inlineRadio10">5</label>
+            <input class="form-check-input" type="radio" name="Rating" id="inlineRadio10" value=5 disabled>
+            <label class="form-check-label" for="inlineRadio10">5</label>
         </div>
     </fieldset>
-    <div class="col-md-4 offset-md-4">
+    <div class="col-md-6 offset-md-3">
         <label for="Textarea2" class="form-label">Review</label>
         <textarea class="form-control" id="Textarea2" name="comment" rows="3" placeholder="Please login to submit a review." disabled></textarea>
-    </div>
+    </div><br>
     {% endif %}
-</form>
-{% endif %}
+</form><br>
+</div><br>
 
 <div class="list-group list-group-flush">
     {% for review in studenthousing.review_set.all %}
-        <div class="list-group-item" style="margin-left: 250px; margin-right: 250px; margin-top: 5px;">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Rating: {{review.rating}}</h5>
-                <small>{{review.pub_date}}</small>
-            </div>
-            <p class="mb-1">Review: {{review.comment}}<br><br></p>
-        </div><br>
-    {% endfor %}
+    <div class="list-group-item" style="margin-left: 250px; margin-right: 250px; margin-top: 5px;">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Rating: {{review.rating}}</h5>
+            <small>{{review.pub_date}}</small>
+        </div>
+        <p class="mb-1">Review: {{review.comment}}<br><br></p>
+    </div><br> {% endfor %}
 </div>
 
 <div style="bottom:0; width:100%" class="card text-center">
     <div class="card-body">
-      <h5 class="card-title">Project B-07</h5>
-      <p class="card-text">CS3240 Off-Grounds Housing</p>
+        <h5 class="card-title">Project B-07</h5>
+        <p class="card-text">CS3240 Off-Grounds Housing</p>
     </div>
     <div class="card-footer text-muted">
-      c. 2021
+        c. 2021
     </div>
 </div>

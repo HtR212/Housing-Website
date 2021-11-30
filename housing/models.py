@@ -92,3 +92,5 @@ class SuggestedListings(models.Model):
             return True
         else:
             return False
+
+

@@ -7,3 +7,4 @@ admin.site.register(Review)
 admin.site.register(User)
 admin.site.register(UserReview)
 admin.site.register(SuggestedListings)
+
