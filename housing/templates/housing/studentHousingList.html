@@ -72,7 +72,7 @@
                         <h5 class="card-title"><a style="text-decoration:none" href="{% url 'housing:detail' studentHousing.id %}"><strong>{{ studentHousing.name }}</strong></a></h5>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><strong>Distance to Grounds:</strong> {{ studentHousing.distToGrounds }}</li>
+                        <li class="list-group-item"><strong>Distance to Grounds:</strong> {{ studentHousing.distToGrounds }} mi</li>
                         <li class="list-group-item"><strong>Location:</strong> {{ studentHousing.location }}</li>
                         <li class="list-group-item"><strong>Cost:</strong> ${{ studentHousing.minCost }} - ${{ studentHousing.maxCost }}</li>
                     </ul>
