@@ -91,6 +91,13 @@
                     zoom: 14
                 });
             </script>
+            {% if studentHousingList %}
+                {% for studentHousing in studentHousingList %}
+                <script>
+                marker = new mapboxgl.Marker().setLngLat([{{studentHousing.long}}, {{studentHousing.lat}}]).addTo(map);
+                </script>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 </div>
