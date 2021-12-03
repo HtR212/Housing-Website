@@ -168,37 +168,37 @@ class ReviewTest(TestCase):
 
 class SuggestionSubmissionSuccess(TestCase):
     def setUp(self):
-        self.listingName = "Carratt Apartments"
-        self.listingAddress = "1904 Jefferson Park Avenue, Charlottesville, VA 22903"
+        self.Name = "Carratt Apartments"
+        self.Address = "1904 Jefferson Park Avenue, Charlottesville, VA 22903"
 
     def test_SuggestedListing_str(self):
         """
         SuggestedListings toString returns listingName
         """
-        exampleSuggestion = SuggestedListings(listingName=self.listingName, listingAddress=self.listingAddress)
-        self.assertIs(str(exampleSuggestion), exampleSuggestion.listingName)
+        exampleSuggestion = SuggestedListings(Name=self.Name, Address=self.Address)
+        self.assertIs(str(exampleSuggestion), exampleSuggestion.Name)
 
     def test_good_suggestion(self):
         """
         Tests for successful submission of a suggestion
         """
-        validsuggestion = SuggestedListings.objects.create(listingName=self.listingName, listingAddress=self.listingAddress)
+        validsuggestion = SuggestedListings.objects.create(Name=self.Name, Address=self.Address)
         self.assertIs(validsuggestion.valid_parameters(), True)
 
     def test_bad_name_suggestion(self):
         """
         Tests that an invalid suggestion(one without a name or address) is not submitted
         """
-        invalidsuggestion = SuggestedListings.objects.create(listingName="",
-                                                           listingAddress=self.listingAddress)
+        invalidsuggestion = SuggestedListings.objects.create(Name="",
+                                                           Address=self.Address)
         self.assertIs(invalidsuggestion.valid_parameters(), False)
 
     def test_bad_addr_suggestion(self):
         """
         Tests that an invalid suggestion(one without a name or address) is not submitted
         """
-        invalidsuggestion = SuggestedListings.objects.create(listingName=self.listingName,
-                                                           listingAddress="")
+        invalidsuggestion = SuggestedListings.objects.create(Name=self.Name,
+                                                           Address="")
         self.assertIs(invalidsuggestion.valid_parameters(), False)
 
 class LongLatTests(TestCase):
