@@ -81,14 +81,14 @@ class UserFavorite(models.Model):
 
 
 class SuggestedListings(models.Model):
-    listingName = models.CharField(max_length=200)
-    listingAddress = models.CharField(max_length=500)
+    Name = models.CharField(max_length=200)
+    Address = models.CharField(max_length=500)
 
     def __str__(self):
-        return self.listingName
+        return self.Name
 
     def valid_parameters(self):
-        if len(self.listingName) > 0 and len(self.listingAddress) > 0:
+        if len(self.Name) > 0 and len(self.Address) > 0:
             return True
         else:
             return False

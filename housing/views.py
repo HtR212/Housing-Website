@@ -74,7 +74,7 @@ def user_review_list(request):
 class SuggestionView(generic.CreateView):
     model = SuggestedListings
     template_name = "housing/submission.html"
-    fields = ['listingName', 'listingAddress']
+    fields = ['Name', 'Address']
     success_url = 'success/'
 
 
