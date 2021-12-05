@@ -55,15 +55,15 @@
 </nav>
 
 {% if user.is_authenticated %}
-<div style="width: 400px; font-size:120%">
-    <p class="font-weight-bold">Hi, {{ user.username }}! Want to suggest a listing to add? Submit your suggestion here:</p>
+<div style="font-size:120%">
+    <p class="font-weight-bold display-6" style="margin-left: 10px">Hi, {{ user.username }}! Want to suggest a listing to add? <br>Submit your suggestion here:</p>
 </div>
 
 <li class="d-flex justify-content-center text=center">
     <form method="post">{% csrf_token %} {{form.as_p}}
-        <input type="submit" value="Submit suggested listing">
+        <input type="submit" class="btn btn-primary" value="Submit suggested listing">
     </form>
-</li>
+</li><br>
 
 
 

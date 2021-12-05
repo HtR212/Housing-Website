@@ -1,0 +1,194 @@
+<!doctype html>
+
+<!-- Bootstrap -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
+
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load socialaccount %}
+
+<div style="width: 100%" class="shadow p-2 mb-3 bg-body rounded text-white">
+    <h3 class="font-monospace text-center">Housing for UVA Students by B-07!</h3>
+</div>
+
+{% if error_message %}<p class="col-md-4 offset-md-4"><strong>{{ error_message }}</strong></p>{% endif %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+        <a class="navbar-brand">Explore!</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Homepage</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'housing:studentHousingList' %}">Browse Listings</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'housing:logout' %}">Logout</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">Account</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item nav-link" style="color:black;" href="{% url 'housing:profile' %}">Profile</a>
+                        <a class="dropdown-item nav-link" style="color:black;" href="{% url 'housing:review_list' %}">Manage comments</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'housing:submission' %}">Suggest a Listing</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% provider_login_url 'google' %}">Login</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<h1 class="display-3 col-md-4 offset-md-4">Review Edit</h1><br>
+
+{% if review %}
+<form action="{% url 'housing:review_edit_submit' review.id %}" method="post">
+    {% csrf_token %}
+    {% if user.is_authenticated %}
+    <label for="FieldSet1" class="form-label col-md-6 offset-md-3">Rating</label>
+    <fieldset id="FieldSet1" class="col-md-6 offset-md-3">
+        {% if review.rating == 1 %}
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1" checked="checked">
+                <label class="form-check-label" for="inlineRadio1">1</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="2">
+                <label class="form-check-label" for="inlineRadio2">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="3">
+                <label class="form-check-label" for="inlineRadio3">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value="4">
+                <label class="form-check-label" for="inlineRadio4">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5">
+                <label class="form-check-label" for="inlineRadio5">5</label>
+            </div>
+        {% elif review.rating == 2 %}
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio11" value="1">
+                <label class="form-check-label" for="inlineRadio11">1</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio12" value="2" checked="checked">
+                <label class="form-check-label" for="inlineRadio12">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio13" value="3">
+                <label class="form-check-label" for="inlineRadio13">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio14" value="4">
+                <label class="form-check-label" for="inlineRadio14">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio15" value="5">
+                <label class="form-check-label" for="inlineRadio15">5</label>
+            </div>
+        {% elif review.rating == 3 %}
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio21" value="1">
+                <label class="form-check-label" for="inlineRadio21">1</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio22" value="2">
+                <label class="form-check-label" for="inlineRadio22">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio23" value="3" checked="checked">
+                <label class="form-check-label" for="inlineRadio23">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio24" value="4">
+                <label class="form-check-label" for="inlineRadio24">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio25" value="5">
+                <label class="form-check-label" for="inlineRadio25">5</label>
+            </div>
+        {% elif review.rating == 4 %}
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio31" value="1">
+                <label class="form-check-label" for="inlineRadio31">1</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio32" value="2">
+                <label class="form-check-label" for="inlineRadio32">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio33" value="3">
+                <label class="form-check-label" for="inlineRadio33">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio34" value="4" checked="checked">
+                <label class="form-check-label" for="inlineRadio34">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio35" value="5">
+                <label class="form-check-label" for="inlineRadio35">5</label>
+            </div>
+        {% else %}
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio41" value="1">
+                <label class="form-check-label" for="inlineRadio41">1</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio42" value="2">
+                <label class="form-check-label" for="inlineRadio42">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio43" value="3">
+                <label class="form-check-label" for="inlineRadio43">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio44" value="4">
+                <label class="form-check-label" for="inlineRadio44">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="rating" id="inlineRadio45" value="5" checked="checked">
+                <label class="form-check-label" for="inlineRadio45">5</label>
+            </div>
+        {% endif %}
+    </fieldset>
+    <div class="col-md-6 offset-md-3">
+        <label for="Textarea1" class="form-label">Review</label>
+        <textarea class="form-control w-100" id="Textarea1" name="comment" rows="3">{{ rating.comment }}</textarea>
+        <br>
+        <button class="btn btn-primary offset-md-5" type="submit">Submit</button>
+    </div><br>
+    {% endif %}
+</form>
+{% else %}
+    <p>Review not available.</p>
+{% endif %}
+<br>
+
+<div style="bottom:0; width:100%" class="card text-center">
+    <div class="card-body">
+        <h5 class="card-title">Project B-07</h5>
+        <p class="card-text">CS3240 Off-Grounds Housing</p>
+    </div>
+    <div class="card-footer text-muted">
+        c. 2021
+    </div>
+</div>

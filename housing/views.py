@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.views import generic
 from django.shortcuts import get_object_or_404
-from .models import StudentHousing, Review, UserReview, UserFavorite, User, SuggestedListings
+from .models import StudentHousing, Review, UserReview, User, SuggestedListings
 from django.urls import reverse
 from django.utils import timezone
 from django.db.models import Avg
@@ -114,6 +114,32 @@ def submit_profile_view(request):
         return HttpResponseRedirect(reverse('housing:profile'))
 
 
-def review_delete(request):
+def review_delete(request, review_id):
+    get_object_or_404(User.objects.get(email=request.user.email).userreview_set, review_id=review_id) # Check if the current review belongs to the current user
+    r = get_object_or_404(Review, pk=review_id)
+    r.delete()
+    return redirect('housing:review_list')
 
-    return
+
+def review_edit(request, review_id):
+    get_object_or_404(User.objects.get(email=request.user.email).userreview_set, review_id=review_id) # Check if the current review belongs to the current user
+    context = {'review': get_object_or_404(Review, pk=review_id)}
+    return render(request, 'housing/reviewEdit.html', context)
+
+
+def review_edit_submit(request, review_id):
+    get_object_or_404(User.objects.get(email=request.user.email).userreview_set, review_id=review_id) # Check if the current review belongs to the current user
+    r = get_object_or_404(Review, pk=review_id)
+    try:
+        rating = (request.POST['rating'])
+        comment = (request.POST['comment'])
+    except KeyError:
+        return render(request, 'housing/reviewEdit.html', {
+            'review': get_object_or_404(Review, pk=review_id),
+            'error_message': "System error",
+        })
+    else:
+        r.rating = rating
+        r.comment = comment
+        r.save()
+        return HttpResponseRedirect(reverse('housing:review_list'))

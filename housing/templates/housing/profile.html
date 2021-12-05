@@ -74,10 +74,11 @@
         <label class="form-label">Major</label>
         <li class="list-group-item">{{ currentuser.major }}</li><br>
     </ul>
-    <a style="text-decoration:none" class="btn btn-primary col-md-1 offset-md-5" href="{% url 'housing:edit_profile' %}">Edit</a>
+    <a style="text-decoration:none" class="btn btn-primary col-md-1 offset-md-5" href="{% url 'housing:edit_profile' %}">Edit</a><br>
 {% else %}
     <p>No profile available.</p>
 {% endif %}
+<br>
 
 <div style="bottom:0; width:100%" class="card text-center">
     <div class="card-body">

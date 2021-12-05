@@ -57,8 +57,8 @@
 {% if error_message %}<p class="col-md-4 offset-md-4"><strong>{{ error_message }}</strong></p>{% endif %}
 
 {% if user.is_authenticated %}
-<div style="width: 400px; font-size:120%">
-    <p class="font-weight-bold">Hi, {{ user.username }}! Here are the details:</p>
+<div style="font-size:120%">
+    <p class="font-weight-bold display-6" style="margin-left: 10px">Hi, {{ user.username }}! Here are the details:</p>
 </div>
 {% endif %}
 
@@ -69,6 +69,8 @@
                 <div class="card border-0">
                     <div class="card-body">
                         <h2>{{ studenthousing.name }}</h2>
+                        <br>
+                        <h4>General Information:</h4>
                         {% if studenthousing.averageRating == 0.0 %}
                             <p class='card-text'><b>Average rating: </b>No ratings yet</p>
                         {% else %}
@@ -84,10 +86,12 @@
                         <p class='card-text'><b>Cost Range: </b>${{ studenthousing.minCost }} - ${{ studenthousing.maxCost }}</p>
                         <p class='card-text'><b>Location: </b>{{ studenthousing.location }}</p>
                         <p class='card-text'><b>Amenities: </b>{{ studenthousing.amenities }}</p>
+                        <br>
                         <h4>Landlord & Deadline Information:</h4>
                         <p class='card-text'><b>Email: </b>{{ studenthousing.landlordEmail }}</p>
                         <p class='card-text'><b>Phone Number: </b>{{ studenthousing.landlordPhone }}</p>
                         <p class='card-text'><b>Deadline to Apply: </b>{{ studenthousing.deadline }}</p>
+                        <p></p>
                     </div>
                 </div>
             </div>
@@ -96,6 +100,7 @@
             <div class="col-sm-11">
                 <div class="card border-0">
                     <div class="card-body">
+                        <br><br><br>
                         <div id='map' style='width: 500px; height: 400px; margin: auto'></div>
                         <script>
                             mapboxgl.accessToken = 'pk.eyJ1IjoiYXZhbmVlbnAiLCJhIjoiY2t2bnprNGxhMWs1MTJubzB5M2J0OG95eiJ9.xN5gncTvjcamL4-60POirQ';

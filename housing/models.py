@@ -72,12 +72,12 @@ class UserReview(models.Model):
         return str(self.review_id)
 
 
-class UserFavorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    favorite_housing_id = models.IntegerField(default=0)
-
-    def __str__(self):
-        return str(self.favorite_housing_id)
+# class UserFavorite(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     favorite_housing_id = models.IntegerField(default=0)
+#
+#     def __str__(self):
+#         return str(self.favorite_housing_id)
 
 
 class SuggestedListings(models.Model):

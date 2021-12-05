@@ -55,8 +55,8 @@
 </nav>
 
 {% if user.is_authenticated %}
-<div style="width: 400px; font-size:120%">
-    <p class="font-weight-bold">Hi, {{ user.username }}! Here are the listings:</p>
+<div style="font-size:120%">
+    <p class="font-weight-bold display-6" style="margin-left: 10px">Hi, {{ user.username }}! Here are the listings:</p>
 </div>
 {% endif %} {% if studentHousing_list %}
 <dl style="margin-left: 10px">
