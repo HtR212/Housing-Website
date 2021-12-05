@@ -5,7 +5,6 @@ from housing.models import Review
 from housing.models import SuggestedListings
 from housing.models import User
 from housing.models import UserReview
-from housing.models import UserFavorite
 
 # Create your tests here.
 class DummyTestCase(TestCase):
@@ -243,13 +242,13 @@ class UserReviewTests(TestCase):
         exampleUserReview = UserReview(user=self.user, review_id=1)
         self.assertEqual(str(exampleUserReview), str(exampleUserReview.review_id))
 
-class UserFavoriteTests(TestCase):
-    def setUp(self):
-        self.user = User.objects.create(email="projectB07@virginia.edu")
-
-    def test_UserFavorite_str(self):
-        exampleUserFavorite = UserFavorite(user=self.user, favorite_housing_id=1)
-        self.assertEqual(str(exampleUserFavorite), str(exampleUserFavorite.favorite_housing_id))
+# class UserFavoriteTests(TestCase):
+#     def setUp(self):
+#         self.user = User.objects.create(email="projectB07@virginia.edu")
+#
+#     def test_UserFavorite_str(self):
+#         exampleUserFavorite = UserFavorite(user=self.user, favorite_housing_id=1)
+#         self.assertEqual(str(exampleUserFavorite), str(exampleUserFavorite.favorite_housing_id))
 
 ### Testing Views & Integration Tests
 class NotLoggedInFlow(TestCase):

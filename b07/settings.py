@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
-import os
+import os, sys
 from pathlib import Path
 import dj_database_url
 
@@ -86,13 +86,25 @@ WSGI_APPLICATION = 'b07.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'dfmu7ud4j6eu3l',
+            'USER': 'szycvcqkdbzerl',
+            'PASSWORD': 'e58eac8aa7adcac1b38fe8df1a8afdce8ef212b5abc0d2c74ee979c285247b18',
+            'HOST': 'ec2-3-215-83-124.compute-1.amazonaws.com',
+            'PORT': '5432'
+        }
     }
-}
+
+if "test" in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 # For Postgres on heroku
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
