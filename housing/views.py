@@ -127,9 +127,10 @@ def review_edit(request, review_id):
     return render(request, 'housing/reviewEdit.html', context)
 
 
-def review_edit_submit(request, review_id):
+def review_edit_submit(request, review_id, housing_id):
     get_object_or_404(User.objects.get(email=request.user.email).userreview_set, review_id=review_id) # Check if the current review belongs to the current user
     r = get_object_or_404(Review, pk=review_id)
+    housing = get_object_or_404(StudentHousing, pk=housing_id)
     try:
         rating = (request.POST['rating'])
         comment = (request.POST['comment'])
@@ -143,4 +144,6 @@ def review_edit_submit(request, review_id):
         r.comment = comment
         r.pub_date = timezone.now()
         r.save()
+        housing.averageRating = round(housing.review_set.aggregate(Avg('rating'))['rating__avg'], 1)
+        housing.save()
         return HttpResponseRedirect(reverse('housing:review_list'))

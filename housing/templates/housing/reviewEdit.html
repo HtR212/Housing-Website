@@ -58,7 +58,7 @@
 <h1 class="display-3 col-md-4 offset-md-4">Review Edit</h1><br>
 
 {% if review %}
-<form action="{% url 'housing:review_edit_submit' review.id %}" method="post">
+<form action="{% url 'housing:review_edit_submit' review.id review.house.id %}" method="post">
     {% csrf_token %}
     {% if user.is_authenticated %}
     <h4 class="display-6 col-md-6 offset-md-3">{{ review.house.name }}</h4>

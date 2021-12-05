@@ -19,5 +19,5 @@ urlpatterns = [
     path('profile/submit/', views.submit_profile_view, name='submit_profile'),
     path('manage_reviews/delete/<int:review_id>/', views.review_delete, name='review_delete'),
     path('manage_reviews/edit/<int:review_id>/', views.review_edit, name='review_edit'),
-    path('manage_reviews/edit/<int:review_id>/submit/', views.review_edit_submit, name='review_edit_submit'),
+    path('manage_reviews/edit/<int:review_id>/submit/<int:housing_id>', views.review_edit_submit, name='review_edit_submit'),
 ]
