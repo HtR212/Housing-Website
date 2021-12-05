@@ -141,5 +141,6 @@ def review_edit_submit(request, review_id):
     else:
         r.rating = rating
         r.comment = comment
+        r.pub_date = timezone.now()
         r.save()
         return HttpResponseRedirect(reverse('housing:review_list'))
