@@ -93,7 +93,7 @@ def edit_profile_view(request):
 
 
 def submit_profile_view(request):
-    u = User.objects.get(email=request.user.email)
+    u = get_object_or_404(User, email=request.user.email)
     # school_year_choices = {'FR': "Freshman", 'SO': "Sophomore", 'JR': "Junior", 'SR': "Senior", 'GR': "Graduate", 'OT': "Other"}
     try:
         gender = (request.POST['gender'])
@@ -103,7 +103,7 @@ def submit_profile_view(request):
     except KeyError:
         return render(request, 'housing/profileEdit.html', {
             'currentuser': u,
-            'error_message': "Unknown error",
+            'error_message': "System error",
         })
     else:
         u.gender = gender
@@ -112,3 +112,8 @@ def submit_profile_view(request):
         u.major = major
         u.save()
         return HttpResponseRedirect(reverse('housing:profile'))
+
+
+def review_delete(request):
+
+    return
