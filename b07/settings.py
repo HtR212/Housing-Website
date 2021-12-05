@@ -191,11 +191,6 @@ AWS_QUERYSTRING_AUTH = False
 
 
 
-
-
-
-
-
-
+SECURE_SSL_REDIRECT = False
 
 

@@ -58,7 +58,7 @@
 
 {% if user.is_authenticated %}
 <div style="width: 400px; font-size:120%">
-    <p class="text-success">Hi, {{ user.username }}! Here are the details:</p>
+    <p class="font-weight-bold">Hi, {{ user.username }}! Here are the details:</p>
 </div>
 {% endif %}
 
@@ -68,22 +68,26 @@
              <div class="offset-sm-1">
                 <div class="card border-0">
                     <div class="card-body">
-                        <p class='card-text'><b>Name: </b>{{ studenthousing.name }}</p>
-                        <p class='card-text'><b>Distance </b>to grounds: {{ studenthousing.distToGrounds }}</p>
-                        <p class='card-text'><b>Parking: </b>{{ studenthousing.parking }}</p>
-                        <p class='card-text'><b>Min cost: </b>{{ studenthousing.minCost }}</p>
-                        <p class='card-text'><b>Max cost: </b>{{ studenthousing.maxCost }}</p>
-                        <p class='card-text'><b>Location: </b>{{ studenthousing.location }}</p>
-                        <p class='card-text'><b>Landlord email: </b>{{ studenthousing.landlordEmail }}</p>
-                        <p class='card-text'><b>Landlord phone: </b>{{ studenthousing.landlordPhone }}</p>
-                        <p class='card-text'><b>Amenities: </b>{{ studenthousing.amenities }}</p>
-                        <p class='card-text'><b>Deadline: </b>{{ studenthousing.deadline }}</p>
+                        <h2>{{ studenthousing.name }}</h2>
                         {% if studenthousing.averageRating == 0.0 %}
                             <p class='card-text'><b>Average rating: </b>No ratings yet</p>
                         {% else %}
-                            <p class='card-text'><b>Average rating: </b>{{ studenthousing.averageRating }}</p>
+                            <p class='card-text'><b>Average rating: </b>{{ studenthousing.averageRating }}/5</p>
                         {% endif %}
+                        <p class='card-text'><b>Distance to grounds:</b> {{ studenthousing.distToGrounds }} mi</p>
                         <p class='card-text'><b>Address: </b>{{ studenthousing.address }}</p>
+                        {% if studenthousing.parking == True %}
+                            <p class='card-text'><b>Is there Parking? </b> Yes!</p>
+                        {% else %}
+                            <p class='card-text'><b>Is there Parking? </b> No</p>
+                        {% endif %}
+                        <p class='card-text'><b>Cost Range: </b>${{ studenthousing.minCost }} - ${{ studenthousing.maxCost }}</p>
+                        <p class='card-text'><b>Location: </b>{{ studenthousing.location }}</p>
+                        <p class='card-text'><b>Amenities: </b>{{ studenthousing.amenities }}</p>
+                        <h4>Landlord & Deadline Information:</h4>
+                        <p class='card-text'><b>Email: </b>{{ studenthousing.landlordEmail }}</p>
+                        <p class='card-text'><b>Phone Number: </b>{{ studenthousing.landlordPhone }}</p>
+                        <p class='card-text'><b>Deadline to Apply: </b>{{ studenthousing.deadline }}</p>
                     </div>
                 </div>
             </div>

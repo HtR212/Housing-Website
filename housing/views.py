@@ -11,6 +11,8 @@ from django.db.models import Avg
 
 # Create your views here.
 def index(request):
+    context = {'studentHousingList': StudentHousing.objects.filter(distToGrounds__gt=0).filter(minCost__gt=0).filter(maxCost__gt=0)\
+            .filter(averageRating__gte=0).filter(averageRating__lte=5)}
     if request.user.is_authenticated:
         try:
             u = User.objects.get(email=request.user.email)
@@ -18,7 +20,7 @@ def index(request):
             u.save()
         except User.DoesNotExist:
             User.objects.create(email=request.user.email, userName=request.user.username)
-    return render(request, 'housing/index.html')
+    return render(request, 'housing/index.html', context)
 
 
 class HousingListView(generic.ListView):
@@ -72,7 +74,7 @@ def user_review_list(request):
 class SuggestionView(generic.CreateView):
     model = SuggestedListings
     template_name = "housing/submission.html"
-    fields = ['listingName', 'listingAddress']
+    fields = ['Name', 'Address']
     success_url = 'success/'
 
 
