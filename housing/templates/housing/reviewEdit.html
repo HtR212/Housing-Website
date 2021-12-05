@@ -61,6 +61,7 @@
 <form action="{% url 'housing:review_edit_submit' review.id %}" method="post">
     {% csrf_token %}
     {% if user.is_authenticated %}
+    <h4 class="display-6 col-md-6 offset-md-3">{{ review.house.name }}</h4>
     <label for="FieldSet1" class="form-label col-md-6 offset-md-3">Rating</label>
     <fieldset id="FieldSet1" class="col-md-6 offset-md-3">
         {% if review.rating == 1 %}
