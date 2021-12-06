@@ -96,12 +96,12 @@ DATABASES = {
     }
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 # For Postgres on heroku
 # db_from_env = dj_database_url.config()
 # DATABASES['default'].update(db_from_env)
