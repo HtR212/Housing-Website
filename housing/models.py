@@ -52,7 +52,7 @@ class Review(models.Model):
             return False
 
 
-class User(models.Model):
+class UserProfile(models.Model):
     email = models.CharField(max_length=320, primary_key=True) # According to Google, the longest email address could have 320 characters
     gender = models.CharField(max_length=20, default="")
     userName = models.CharField(max_length=100, default="")
@@ -65,7 +65,7 @@ class User(models.Model):
 
 
 class UserReview(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     review_id = models.IntegerField(default=0)
 
     def __str__(self):

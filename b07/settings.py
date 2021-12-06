@@ -203,9 +203,3 @@ AWS_SECRET_ACCESS_KEY = 'goxRFP9raUBIQjh8n2xSHTeVCAwVM3TrQIdI6p/a'
 AWS_STORAGE_BUCKET_NAME = 'housing-b07-listing-submissions'
 AWS_QUERYSTRING_AUTH = False
 
-
-
-
-SECURE_SSL_REDIRECT = False
-
-

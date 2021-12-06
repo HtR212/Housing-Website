@@ -3,8 +3,12 @@ from django.urls import reverse
 from housing.models import StudentHousing
 from housing.models import Review
 from housing.models import SuggestedListings
-from housing.models import User
+from housing.models import UserProfile
 from housing.models import UserReview
+
+from django.contrib.auth.models import User
+from django.test.client import Client
+from django.contrib.auth import get_user_model
 
 # Create your tests here.
 class DummyTestCase(TestCase):
@@ -143,7 +147,7 @@ class ReviewTest(TestCase):
         self.rating = 7
         self.comment = "great"
         self.pub_date = "2021-11-08 12:20"
-        self.user = User.objects.create(email="projectB07@virginia.edu")
+        self.user = UserProfile.objects.create(email="projectB07@virginia.edu")
 
     def test_review_str(self):
         exampleReview = Review(house=self.house, rating=self.rating, comment=self.comment, pub_date=self.pub_date)
@@ -231,12 +235,12 @@ class UserModelTests(TestCase):
         self.userEmail = "projectB07@virginia.edu"
     
     def test_User_str(self):
-        exampleUser = User(email=self.userEmail)
+        exampleUser = UserProfile(email=self.userEmail)
         self.assertEqual(str(exampleUser), exampleUser.email)
 
 class UserReviewTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create(email="projectB07@virginia.edu")
+        self.user = UserProfile.objects.create(email="projectB07@virginia.edu")
         
     def test_UserReview_str(self):
         exampleUserReview = UserReview(user=self.user, review_id=1)
@@ -290,3 +294,106 @@ class NotLoggedInFlow(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.validListing.distToGrounds)
         self.assertContains(response, "Please login to submit a review")
+
+class LoggedInFlow(TestCase):
+    def setUp(self):
+        self.userEmail = 'projectB07@virginia.edu'
+        self.userPassword = 'mypassword'
+        self.userName = 'myuser'
+        
+        self.u = UserProfile(email=self.userEmail)
+        self.u.save()
+
+        my_admin = User.objects.create_superuser(self.userName, self.userEmail, self.userPassword)
+        my_admin.save()
+
+        self.c = Client()
+        self.c.force_login(user=my_admin, backend=None)
+
+        self.name1="Test_Housing_Name1"
+        self.distToGrounds1 = 100
+        self.parking1 = False
+        self.minCost1 = 999
+        self.maxCost1 = 4299
+        self.averageRating1 = 0
+        self.minCost2 = -999
+        self.validListing = StudentHousing.objects.create(name=self.name1, distToGrounds=self.distToGrounds1, 
+        parking=self.parking1, minCost=self.minCost1, maxCost=self.maxCost1, averageRating=self.averageRating1, address="1308 Wertland St, Charlottesville, VA 22903")
+
+
+    def test_LoggedIn_NavBar(self):
+        url = reverse('housing:index')
+        response = self.c.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Explore!")
+        self.assertContains(response, "Homepage")
+        self.assertContains(response, "Browse Listings")
+        self.assertContains(response, "Logout")
+        self.assertContains(response, "Account")
+        self.assertContains(response, "Suggest a Listing")
+
+    def test_LoggedIn_HomePage(self):
+        url = reverse('housing:index')
+        response = self.c.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.userEmail)
+        self.assertContains(response, self.userName)
+
+    def test_LoggedIn_SuggestListing(self):
+        url = reverse('housing:submission')
+        response = self.c.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Submit your suggestion here:")
+        self.assertContains(response, "Submit suggested listing")
+        
+        self.c.post(reverse('housing:submission'), {'listingName': 'The Warehouse', 'listingAddress': '1308 Wertland Street'})
+        suggestion1 = SuggestedListings.objects.get(listingName='The Warehouse')
+        self.assertEqual(suggestion1.listingAddress, "1308 Wertland Street")
+
+
+    def test_LoggedIn_Comments(self):
+        url = reverse('housing:detail', args=(self.validListing.id,))
+        response = self.c.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.c.post(reverse('housing:review_submit', args=(self.validListing.id,)), {'rating': '3', 'comment': 'Test Comment'})
+        
+        url = reverse('housing:detail', args=(self.validListing.id,))
+        response = self.c.get(url)
+        self.assertContains(response, "Review: Test Comment")
+        self.assertContains(response, "Rating: 3")
+
+        url = reverse('housing:review_list')
+        response = self.c.get(url)
+        self.assertContains(response, "Test Comment")
+
+    def test_LoggedIn_Profile(self):
+        url = reverse('housing:profile')
+        response = self.c.get(url)
+        self.assertContains(response, self.userEmail)
+
+        url = reverse('housing:edit_profile')
+        response = self.c.get(url)
+        self.c.post(reverse('housing:submit_profile'), {'gender': 'Male', 'age': '19', 
+        'schoolYear': 'Sophomore', 'major': 'Computer Science'})
+
+        url = reverse('housing:profile')
+        response = self.c.get(url)
+        self.assertContains(response, "Male")
+        self.assertContains(response, "19")
+        self.assertContains(response, "Sophomore")
+        self.assertContains(response, "Computer Science")
+
+    def test_LoggedIn_Logout(self):
+        url = reverse('housing:logout')
+        response = self.c.get(url)
+        url = reverse('housing:index')
+        response = self.c.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Login with Google")
+        self.assertContains(response, "Explore!")
+        self.assertContains(response, "Homepage")
+        self.assertContains(response, "Browse Listings")
+        self.assertContains(response, "Login")
+        self.assertNotContains(response, "Logout")
+        self.assertNotContains(response, "Manage comments")
+        self.assertNotContains(response, "Suggest a Listing")
