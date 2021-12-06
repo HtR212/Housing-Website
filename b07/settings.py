@@ -84,6 +84,8 @@ WSGI_APPLICATION = 'b07.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
+import sys
+
 DATABASES = {
     'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -95,13 +97,13 @@ DATABASES = {
         }
     }
 
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 # For Postgres on heroku
 # db_from_env = dj_database_url.config()
 # DATABASES['default'].update(db_from_env)
