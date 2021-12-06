@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
-import os, sys
+import os
 from pathlib import Path
 import dj_database_url
 
