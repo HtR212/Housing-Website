@@ -89,10 +89,10 @@ import sys
 DATABASES = {
     'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'd4pir9eleumko7',
-            'USER': 'quzngmvadesxey',
-            'PASSWORD': '4240bebcc19aa2e96bdf7efc54ae80f01becd27868f555ab0541bd9fd775b100',
-            'HOST': 'ec2-3-217-216-13.compute-1.amazonaws.com',
+            'NAME': 'de5b40h80ojmjk',
+            'USER': 'xxrivbftaccvpd',
+            'PASSWORD': '5f4eef4de30854d3af49135f6339314d5642ece83237efdb15d630ed6ce4ce69',
+            'HOST': 'ec2-52-206-193-199.compute-1.amazonaws.com',
             'PORT': '5432'
         }
     }
