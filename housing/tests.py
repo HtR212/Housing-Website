@@ -5,6 +5,7 @@ from housing.models import Review
 from housing.models import SuggestedListings
 from housing.models import UserProfile
 from housing.models import UserReview
+from django.utils import timezone
 
 from django.contrib.auth.models import User
 from django.test.client import Client
@@ -246,6 +247,37 @@ class UserReviewTests(TestCase):
         exampleUserReview = UserReview(user=self.user, review_id=1)
         self.assertEqual(str(exampleUserReview), str(exampleUserReview.review_id))
 
+class ReviewEditTests(TestCase):
+    def setUp(self):
+        self.listingName = "Carratt Apartments"
+        self.distToGrounds = 100
+        self.parking = False
+        self.minCost = 999
+        self.maxCost = 4299
+        self.averageRating = 0
+        self.listingAddress1 = "1904 Jefferson Park Avenue, Charlottesville, VA 22903"
+        self.house = StudentHousing.objects.create(name=self.listingName, distToGrounds=self.distToGrounds,
+                                                   parking=self.parking, minCost=self.minCost, maxCost=self.maxCost,
+                                                   averageRating=self.averageRating, address=self.listingAddress1)
+        self.exampleReview = Review.objects.create(house=self.house, rating=5, comment="", pub_date=timezone.now())
+
+    def test_reviewEdit(self):
+        from django.db.models import Avg
+        self.exampleReview.rating = 4
+        self.exampleReview.comment = ""
+        time = timezone.now()
+        self.exampleReview.pub_date = time
+        self.exampleReview.save()
+        self.house.averageRating = round(self.house.review_set.aggregate(Avg('rating'))['rating__avg'], 1)
+        self.house.save()
+        self.assertEqual(self.house.averageRating, 4)
+        self.assertEqual(self.exampleReview.rating, 4)
+        self.assertEqual(self.exampleReview.pub_date, time)
+
+    def test_reviewDelete(self):
+        self.exampleReview.delete()
+        self.assertEqual(self.house.averageRating, 0)
+
 # class UserFavoriteTests(TestCase):
 #     def setUp(self):
 #         self.user = User.objects.create(email="projectB07@virginia.edu")
@@ -346,9 +378,9 @@ class LoggedInFlow(TestCase):
         self.assertContains(response, "Submit your suggestion here:")
         self.assertContains(response, "Submit suggested listing")
         
-        self.c.post(reverse('housing:submission'), {'listingName': 'The Warehouse', 'listingAddress': '1308 Wertland Street'})
-        suggestion1 = SuggestedListings.objects.get(listingName='The Warehouse')
-        self.assertEqual(suggestion1.listingAddress, "1308 Wertland Street")
+        self.c.post(reverse('housing:submission'), {'Name': 'The Warehouse', 'Address': '1308 Wertland Street'})
+        suggestion1 = SuggestedListings.objects.get(Name='The Warehouse')
+        self.assertEqual(suggestion1.Address, "1308 Wertland Street")
 
 
     def test_LoggedIn_Comments(self):

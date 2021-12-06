@@ -114,10 +114,13 @@ def submit_profile_view(request):
         return HttpResponseRedirect(reverse('housing:profile'))
 
 
-def review_delete(request, review_id):
+def review_delete(request, review_id, housing_id):
     get_object_or_404(UserProfile.objects.get(email=request.user.email).userreview_set, review_id=review_id) # Check if the current review belongs to the current user
     r = get_object_or_404(Review, pk=review_id)
     r.delete()
+    housing = get_object_or_404(StudentHousing, pk=housing_id)
+    housing.averageRating = round(housing.review_set.aggregate(Avg('rating'))['rating__avg'], 1)
+    housing.save()
     return redirect('housing:review_list')
 
 

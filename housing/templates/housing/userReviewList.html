@@ -67,7 +67,7 @@
                 Comment: {{ review.comment }}<br>
                 Time: {{ review.pub_date }}
             </div>
-            <small><a class="btn btn-primary" href="{% url 'housing:review_edit' review.id %}">Edit</a> <a class="btn btn-danger" href="{% url 'housing:review_delete' review.id %}">Delete</a></small>
+            <small><a class="btn btn-primary" href="{% url 'housing:review_edit' review.id %}">Edit</a> <a class="btn btn-danger" href="{% url 'housing:review_delete' review.id review.house.id%}">Delete</a></small>
         </li>
 <!--        <dt class="text-uppercase fw-bolder"><a style="text-decoration:none" href="{% url 'housing:detail' review.house.id %}"><strong>{{ review.house }}</strong></a></dt>-->
 <!--        <dd class="badge bg-white text-danger text-primary fw-light"><em>Rating: {{ review.rating }}</em></dd>-->
