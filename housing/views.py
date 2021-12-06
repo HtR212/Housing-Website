@@ -20,7 +20,7 @@ def index(request):
             u.save()
         except UserProfile.DoesNotExist:
             UserProfile.objects.create(email=request.user.email, userName=request.user.username)
-    return render(request, 'housing/index.html')
+    return render(request, 'housing/index.html', context)
 
 
 class HousingListView(generic.ListView):

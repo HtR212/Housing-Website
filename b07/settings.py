@@ -87,27 +87,34 @@ WSGI_APPLICATION = 'b07.wsgi.application'
 
 import sys
 
-DATABASES = {
-    'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'de5b40h80ojmjk',
-            'USER': 'xxrivbftaccvpd',
-            'PASSWORD': '5f4eef4de30854d3af49135f6339314d5642ece83237efdb15d630ed6ce4ce69',
-            'HOST': 'ec2-52-206-193-199.compute-1.amazonaws.com',
-            'PORT': '5432'
-        }
-    }
+# DATABASES = {
+#     'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'de5b40h80ojmjk',
+#             'USER': 'xxrivbftaccvpd',
+#             'PASSWORD': '5f4eef4de30854d3af49135f6339314d5642ece83237efdb15d630ed6ce4ce69',
+#             'HOST': 'ec2-52-206-193-199.compute-1.amazonaws.com',
+#             'PORT': '5432'
+#         }
+#     }
+#
+# if 'test' in sys.argv:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
+# For Postgres on heroku
+# db_from_env = dj_database_url.config()
+# DATABASES['default'].update(db_from_env)
 
-if 'test' in sys.argv:
-    DATABASES = {
+DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-# For Postgres on heroku
-# db_from_env = dj_database_url.config()
-# DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
