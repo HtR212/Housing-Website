@@ -11,13 +11,13 @@
 {% bootstrap_javascript %}
 {% load socialaccount %}
 
-<div style="width: 100%" class="shadow p-2 mb-3 bg-body rounded text-white">
-    <h3 class="font-monospace text-center">Housing for UVA Students by B-07!</h3>
-</div>
+<!--<div style="width: 100%" class="shadow p-2 mb-3 bg-body rounded text-white">-->
+<!--    <h3 class="font-monospace text-center">Housing for UVA Students by B-07!</h3>-->
+<!--</div>-->
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom box-shadow mb-3">
     <div class="container-fluid">
-        <a class="navbar-brand">Explore!</a>
+        <a class="navbar-brand">Housing Website for UVA Students</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -30,9 +30,6 @@
                     <a class="nav-link" href="{% url 'housing:studentHousingList' %}">Browse Listings</a>
                 </li>
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'housing:logout' %}">Logout</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">Account</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -43,6 +40,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'housing:submission' %}">Suggest a Listing</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'housing:logout' %}">Logout</a>
+                </li>
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% provider_login_url 'google' %}">Login</a>
@@ -52,6 +52,15 @@
         </div>
     </div>
 </nav>
+
+<div class="container">
+    <div class="col d-flex justify-content-center">
+        <div class="jumbotron">
+            <h1 class="display-4">Housing for UVA Students by B-07!</h1>
+            <hr class="my-4">
+        </div>
+    </div>
+</div>
 
 <h1 class="display-3 col-md-4 offset-md-4">Profile</h1><br>
 
