@@ -119,7 +119,10 @@ def review_delete(request, review_id, housing_id):
     r = get_object_or_404(Review, pk=review_id)
     r.delete()
     housing = get_object_or_404(StudentHousing, pk=housing_id)
-    housing.averageRating = round(housing.review_set.aggregate(Avg('rating'))['rating__avg'], 1)
+    try:
+        housing.averageRating = round(housing.review_set.aggregate(Avg('rating'))['rating__avg'], 1)
+    except:
+        housing.averageRating = 0
     housing.save()
     return redirect('housing:review_list')
 
