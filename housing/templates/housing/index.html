@@ -103,7 +103,9 @@
             {% if studentHousingList %}
                 {% for studentHousing in studentHousingList %}
                 <script>
-                    marker = new mapboxgl.Marker().setLngLat([{{studentHousing.long}}, {{studentHousing.lat}}]).addTo(map);
+                    marker = new mapboxgl.Marker().setLngLat([{{studentHousing.long}}, {{studentHousing.lat}}])
+                    .setPopup(new mapboxgl.Popup({ offset: 25 })
+                    .setHTML('<h6><a style="text-decoration:none" href="{% url 'housing:detail' studentHousing.id %}">' + '{{studentHousing.name}}' + '</a></h6>')).addTo(map);
                 </script>
                 {% endfor %}
             {% endif %}
