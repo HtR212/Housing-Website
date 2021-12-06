@@ -84,24 +84,24 @@ WSGI_APPLICATION = 'b07.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#             'ENGINE': 'django.db.backends.postgresql',
-#             'NAME': 'd4pir9eleumko7',
-#             'USER': 'quzngmvadesxey',
-#             'PASSWORD': '4240bebcc19aa2e96bdf7efc54ae80f01becd27868f555ab0541bd9fd775b100',
-#             'HOST': 'ec2-3-217-216-13.compute-1.amazonaws.com',
-#             'PORT': '5432'
-#         }
-#     }
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'd4pir9eleumko7',
+            'USER': 'quzngmvadesxey',
+            'PASSWORD': '4240bebcc19aa2e96bdf7efc54ae80f01becd27868f555ab0541bd9fd775b100',
+            'HOST': 'ec2-3-217-216-13.compute-1.amazonaws.com',
+            'PORT': '5432'
+        }
     }
-}
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 # For Postgres on heroku
 # db_from_env = dj_database_url.config()
 # DATABASES['default'].update(db_from_env)
